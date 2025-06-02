@@ -1,234 +1,100 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>WebAR con Marcadores QR - AR.js + A-Frame</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>WebAR Demo - Mobile</title>
     
-    <!-- Incluir A-Frame -->
-    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-    
-    <!-- Incluir AR.js para A-Frame -->
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-    
-    <!-- Incluir componente de animación mixer para modelos glTF con animaciones -->
-    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <!-- A-Frame 1.4.0 + AR.js versiones específicas y estables -->
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.5/aframe/build/aframe-ar.js"></script>
     
     <style>
-        /* CSS optimizado SOLO para móviles verticales */
-        * {
+        body {
             margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        html, body {
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
             font-family: Arial, sans-serif;
-            background: #000;
-            position: fixed;
-            top: 0;
-            left: 0;
+            overflow: hidden;
         }
         
-        /* A-Frame scene para móviles */
-        a-scene {
-            height: 100vh !important;
-            width: 100vw !important;
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-        }
-        
-        /* Ocultar TODOS los elementos VR y UI de A-Frame */
-        .a-enter-vr,
-        .a-enter-vr-button,
-        .a-enter-vr-modal,
-        .a-orientation-modal,
-        .a-enter-ar,
-        .a-enter-ar-button,
-        .a-loader,
-        .a-canvas,
-        #aframeInspectorContainer,
-        .rs-base {
-            display: none !important;
-            visibility: hidden !important;
-            opacity: 0 !important;
-            pointer-events: none !important;
-        }
-        
-        /* Forzar que canvas ocupe toda la pantalla */
-        canvas {
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100vw !important;
-            height: 100vh !important;
-            z-index: 1 !important;
-        }
-        
-        /* Video de cámara optimizado para vertical */
-        video {
-            width: 100vw !important;
-            height: 100vh !important;
-            object-fit: cover !important;
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-        }
-        
+        /* Info panel mínimo */
         #info {
-            position: fixed;
-            top: env(safe-area-inset-top, 20px);
+            position: absolute;
+            top: 10px;
             left: 10px;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.7);
             color: white;
             padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            z-index: 999;
-            max-width: 280px;
-            backdrop-filter: blur(10px);
+            border-radius: 5px;
+            font-size: 13px;
+            z-index: 100;
         }
         
-        #loader {
+        /* Ocultar UI de VR */
+        .a-enter-vr {
+            display: none !important;
+        }
+        
+        /* Video AR centrado */
+        #arjs-video {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0,0,0,0.9);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            z-index: 1000;
-            max-width: 90vw;
-            backdrop-filter: blur(15px);
-        }
-        
-        .hidden {
-            display: none !important;
-        }
-        
-        /* Forzar orientación vertical para mejor experiencia */
-        @media screen and (orientation: landscape) and (max-height: 500px) {
-            body::before {
-                content: "📱 Por favor, gira tu dispositivo a vertical para mejor experiencia";
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100vw;
-                height: 100vh;
-                background: rgba(0,0,0,0.9);
-                color: white;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 10000;
-                font-size: 16px;
-                text-align: center;
-                padding: 20px;
-            }
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
         }
     </style>
 </head>
-<body>
-    <!-- Panel de información -->
+<body style="margin: 0; overflow: hidden;">
     <div id="info">
-        <h3 style="margin: 0 0 10px 0;">WebAR Demo</h3>
-        <p style="margin: 5px 0;">📱 Apunta la cámara al marcador Hiro</p>
-        <p style="margin: 5px 0;">👆 Toca el modelo para interactuar</p>
+        📱 Apunta al marcador Hiro
     </div>
     
-    <!-- Loader -->
-    <div id="loader">
-        <h3>Iniciando cámara AR...</h3>
-        <p>Por favor, permite el acceso a la cámara</p>
-    </div>
-    
-    <!-- Escena AR -->
     <a-scene
-        embedded
-        arjs='sourceType: webcam; debugUIEnabled: false;'
         vr-mode-ui="enabled: false"
-        device-orientation-permission-ui="enabled: false"
-        keyboard-shortcuts="enterVR: false; exitVR: false"
-        loading-screen="enabled: false"
-        stats="false"
-        inspector="url: false">
+        arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;"
+        renderer="antialias: true; alpha: true">
         
-        <!-- Marcador Hiro (más confiable para móviles) -->
-        <a-marker
-            id="marker"
-            preset="hiro"
-            smooth="true"
-            smoothCount="10"
-            smoothTolerance="0.01"
-            smoothThreshold="5">
-            
-            <!-- Contenedor para el modelo 3D -->
-            <a-entity id="model-container" position="0 0 0">
-                
-                <!-- Robot hecho con primitivas 3D -->
-                <a-entity 
-                    id="modelo-3d"
-                    gltf-model="assets/base_basic_pbr.glb"
-                    position="0 0.5 0"
-                    scale="0.5 0.5 0.5"
-                    animation="property: rotation; to: 0 360 0; loop: true; dur: 10000"
-                    class="clickable">
-                </a-entity>
-                
-                <!-- Partículas decorativas -->
-                <a-entity
-                    id="particles"
-                    position="0 2 0"
-                    particle-system="
-                        preset: dust;
-                        particleCount: 100;
-                        color: #0066ff,#00ffff;
-                        size: 0.3;
-                        opacity: 0.8;
-                        velocityValue: 0 0.3 0;
-                        velocitySpread: 0.5 0 0.5;
-                        accelerationValue: 0 -0.1 0;
-                        duration: 2;
-                        enabled: false">
-                </a-entity>
-                
-                <!-- Texto flotante -->
-                <a-text
-                    value="¡Hola Mundo AR!"
-                    position="0 2.5 0"
-                    align="center"
-                    color="#00ff88"
-                    font="kelsonsans"
-                    width="6"
-                    animation="property: position; to: 0 3 0; dir: alternate; dur: 2000; loop: true; easing: easeInOutSine">
-                </a-text>
-                
-                <!-- Luz para el modelo -->
-                <a-light type="point" color="#ffffff" intensity="1" position="0 3 2"></a-light>
+        <a-marker preset="hiro">
+            <!-- Modelo 3D -->
+            <a-entity 
+                gltf-model="assets/base_basic_pbr.glb"
+                position="0 0 0"
+                scale="0.5 0.5 0.5"
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 10000">
             </a-entity>
+            
+            <!-- Texto -->
+            <a-text
+                value="WebAR Mobile"
+                position="0 1.5 0"
+                align="center"
+                color="#00FF00"
+                width="4">
+            </a-text>
         </a-marker>
         
-        <!-- Cámara con cursor para interacción -->
-        <a-entity camera>
-            <a-cursor
-                raycaster="objects: .clickable"
-                animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 1 1 1; dur: 150"
-                animation__fusing="property: scale; startEvents: fusing; from: 1 1 1; to: 0.1 0.1 0.1; dur: 1500"
-                animation__mouseleave="property: scale; startEvents: mouseleave; to: 1 1 1; dur: 150">
-            </a-cursor>
-        </a-entity>
+        <a-entity camera></a-entity>
     </a-scene>
     
-    <!-- Scripts de interacción -->
-    <script src="js/app.js"></script>
+    <script>
+        // Configuración móvil simple
+        document.addEventListener('DOMContentLoaded', function() {
+            // Prevenir gestos de zoom
+            document.addEventListener('gesturestart', function(e) {
+                e.preventDefault();
+            });
+            
+            // Log para debug
+            console.log('WebAR iniciado - Configuración móvil');
+            
+            // Ocultar info después de 5 segundos
+            setTimeout(() => {
+                document.getElementById('info').style.display = 'none';
+            }, 5000);
+        });
+    </script>
 </body>
 </html> 
