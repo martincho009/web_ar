@@ -1,4 +1,4 @@
-# 🔧 Guía de Solución de Problemas - WebAR
+# 🔧 Guía de Solución de Problemas - WebAR Interactivo
 
 ## ✅ SOLUCIÓN QUE FUNCIONA
 
@@ -8,6 +8,7 @@ Después de muchas pruebas, esta configuración específica es la que funciona c
 ```html
 <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
 <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.7.7/aframe/build/aframe-ar.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
 ```
 
 ⚠️ **IMPORTANTE**: No uses versiones más nuevas, pueden tener problemas de detección de marcadores.
@@ -37,7 +38,40 @@ Después de muchas pruebas, esta configuración específica es la que funciona c
   - ❌ Muy cerca (< 15 cm) no funciona
   - ❌ Muy lejos (> 80 cm) pierde precisión
 
-### 2. **Cámara distorsionada o congelada**
+### 2. **Los gestos táctiles no funcionan** 🆕
+
+#### Problema específico de interactividad:
+- **🔒 Requiere HTTPS**
+  - ✅ Solo funciona con `https://`
+  - ❌ No funciona con `http://` o `file://`
+
+- **👆 Técnica de toque incorrecta**
+  - ✅ Toca **directamente sobre el modelo 3D**
+  - ✅ Espera a que aparezca el modelo primero
+  - ❌ No toques fuera del área del modelo
+
+- **🎮 Gestos mal ejecutados**
+  - ✅ **1 dedo:** Arrastra para rotar
+  - ✅ **2 dedos:** Pellizco para escalar
+  - ❌ No mezcles gestos simultáneamente
+
+- **📱 Pantalla táctil**
+  - ✅ Verifica que tu pantalla táctil funcione
+  - ✅ Limpia la pantalla de grasa/polvo
+  - ❌ No funciona con mouse/trackpad
+
+### 3. **El modelo se comporta erráticamente**
+
+- **🎯 Gestos demasiado rápidos**
+  - ✅ Movimientos lentos y controlados
+  - ✅ Un gesto a la vez
+  - ❌ Evita gestos bruscos
+
+- **📐 Escala fuera de límites**
+  - ✅ Escala entre 10% y 200%
+  - ⚠️ Si alcanza límites, se detiene automáticamente
+
+### 4. **Cámara distorsionada o congelada**
 
 - **🔄 Limpia caché del navegador**
   ```
@@ -52,7 +86,7 @@ Después de muchas pruebas, esta configuración específica es la que funciona c
   - Pellizca para verificar que no hay zoom
   - Reinicia el navegador si es necesario
 
-### 3. **Permisos de cámara**
+### 5. **Permisos de cámara**
 
 - **Android:**
   ```
@@ -66,53 +100,65 @@ Después de muchas pruebas, esta configuración específica es la que funciona c
 
 ## 🌐 Navegadores compatibles
 
-### ✅ Funcionan bien:
-- Chrome Android 70+
-- Safari iOS 11+
-- Firefox Android
+### ✅ Funcionan bien con gestos:
+- Chrome Android 70+ ⭐ (Recomendado)
+- Safari iOS 11+ ⭐ (Recomendado)
+- Firefox Android 68+ (Bueno)
 
 ### ⚠️ Problemas conocidos:
-- Samsung Internet (algunos modelos)
-- Navegadores "lite" o mini
-- WebView dentro de apps
+- Samsung Internet (gestos limitados)
+- Navegadores "lite" o mini (sin soporte táctil)
+- WebView dentro de apps (gestos pueden fallar)
 - Chrome en iOS (usa Safari mejor)
 
 ## 🔍 Debug paso a paso
 
 1. **Verifica HTTPS**
-   - ✅ `https://` (requerido)
+   - ✅ `https://` (OBLIGATORIO para gestos)
    - ❌ `http://` o `file://` no funcionan
 
-2. **Prueba el marcador Hiro primero**
-   - Es el más confiable
-   - Si funciona, el problema era el marcador
+2. **Prueba la detección del marcador primero**
+   - Si el modelo aparece = marcador OK
+   - Si no aparece = problema de marcador
 
-3. **Revisa la consola**
+3. **Prueba los gestos**
+   - Toca el modelo con 1 dedo
+   - Si rota = gestos funcionan
+   - Si no responde = problema de touch
+
+4. **Revisa la consola**
    - En Chrome: `chrome://inspect` desde PC
-   - Busca errores en rojo
+   - Busca errores relacionados con touch events
 
-## 💡 Tips importantes
+## 💡 Tips importantes para interactividad
 
-### Para mejor detección:
-1. **Marcador completamente plano** (sin arrugas)
-2. **Fondo uniforme** alrededor del marcador
-3. **Evita movimientos bruscos**
-4. **Espera 2-3 segundos** para que detecte
+### **Para mejor detección de gestos:**
+1. **Marcador completamente plano** y estable
+2. **Modelo visible completamente** en pantalla
+3. **Toques firmes** pero no excesivos
+4. **Un gesto a la vez** (rotar O escalar)
 
-### Si sigue sin funcionar:
-1. **Prueba otro dispositivo** (puede ser hardware)
-2. **Prueba Firefox** si Chrome falla
-3. **Reinicia el teléfono** (cierra todas las apps)
-4. **Verifica** que no haya otras apps usando la cámara
+### **Técnica de uso:**
+1. **Espera** a que aparezca el modelo
+2. **Toca una vez** para verificar responsividad
+3. **Arrastra suavemente** para rotar
+4. **Pellizca despacio** para escalar
+5. **Mantén el marcador estable** durante gestos
+
+### **Si los gestos no responden:**
+1. **Toca fuera del modelo** y luego dentro
+2. **Levanta todos los dedos** y vuelve a tocar
+3. **Refresca la página** si se atasca
+4. **Verifica** que no haya otro contenido superpuesto
 
 ## 🆘 Último recurso
 
 Si absolutamente nada funciona:
 
-1. **Usa el playground oficial** que sabemos que funciona:
+1. **Usa el playground oficial** para verificar compatibilidad:
    - https://webxr.io/webar-playground/app/
 
-2. **Clona exactamente** esta configuración:
+2. **Prueba la versión mínima sin gestos:**
    ```html
    <!DOCTYPE html>
    <html>
@@ -131,15 +177,36 @@ Si absolutamente nada funciona:
    </html>
    ```
 
-## 📊 Tabla de compatibilidad rápida
+## 📊 Tabla de compatibilidad
 
-| Dispositivo | Chrome | Safari | Firefox | Samsung |
-|-------------|--------|--------|---------|---------|
-| Android 8+  | ✅     | -      | ✅      | ⚠️      |
-| iOS 11+     | ⚠️     | ✅     | ✅      | -       |
+| Dispositivo | Chrome | Safari | Firefox | Gestos |
+|-------------|--------|--------|---------|--------|
+| Android 8+  | ✅     | -      | ✅      | ✅     |
+| iOS 11+     | ⚠️     | ✅     | ✅      | ✅     |
+| Android < 8 | ⚠️     | -      | ⚠️     | ❌     |
+| iOS < 11    | ❌     | ⚠️     | ❌      | ❌     |
+
+## 🎮 Test de gestos
+
+Para verificar que los gestos funcionan:
+
+1. **Test de rotación:**
+   - Toca el modelo con 1 dedo
+   - Arrastra horizontalmente
+   - Debería rotar en el eje Y
+
+2. **Test de escalado:**
+   - Toca con 2 dedos
+   - Separa los dedos (alejar)
+   - El modelo debería agrandarse
+
+3. **Test de límites:**
+   - Intenta escalar muy pequeño/grande
+   - Debería detenerse en los límites
 
 ## 🔗 Referencias útiles
 
 - [Issue #523 - Problema de detección](https://github.com/jeromeetienne/AR.js/issues/523)
 - [AR.js Documentation](https://ar-js-org.github.io/AR.js-Docs/)
-- [Generador de marcadores](https://ar-js-org.github.io/AR.js/three.js/examples/marker-training/examples/generator.html) 
+- [A-Frame Extras - Controles](https://github.com/donmccurdy/aframe-extras)
+- [Touch Events API](https://developer.mozilla.org/en-US/docs/Web/API/Touch_events) 
