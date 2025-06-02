@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Marker para WebAR</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .qr-container {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #000;
+            display: inline-block;
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .instructions {
+            text-align: left;
+            margin: 20px 0;
+            padding: 15px;
+            background: #e8f4f8;
+            border-radius: 5px;
+        }
+        
+        .button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px;
+            display: inline-block;
+        }
+        
+        @media print {
+            body { background: white; }
+            .container { box-shadow: none; }
+            .no-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 QR Marker para WebAR</h1>
+        
+        <div class="instructions no-print">
+            <h3>📋 Instrucciones:</h3>
+            <ol>
+                <li><strong>Imprime esta página</strong> en tamaño carta</li>
+                <li><strong>Recorta el QR</strong> dejando el borde negro</li>
+                <li><strong>Abre la web AR</strong> en tu móvil</li>
+                <li><strong>Apunta la cámara</strong> al QR impreso</li>
+                <li><strong>¡Disfruta del AR!</strong> ✨</li>
+            </ol>
+        </div>
+        
+        <div class="qr-container">
+            <!-- QR Code para marker barcode valor "1" -->
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=1&bgcolor=FFFFFF&color=000000&qzone=1&format=png" 
+                 alt="QR Marker para AR" 
+                 width="300" 
+                 height="300">
+        </div>
+        
+        <div class="no-print">
+            <h3>🖨️ Opciones:</h3>
+            <button onclick="window.print()" class="button">Imprimir QR</button>
+            <a href="index.html" class="button">Probar WebAR</a>
+        </div>
+        
+        <div class="instructions">
+            <h3>⚡ Tips para mejor detección:</h3>
+            <ul>
+                <li><strong>Tamaño mínimo:</strong> 5x5 cm cuando lo imprimas</li>
+                <li><strong>Papel blanco:</strong> Mejor contraste</li>
+                <li><strong>Superficie plana:</strong> Sin arrugas ni dobleces</li>
+                <li><strong>Buena iluminación:</strong> Evita sombras</li>
+                <li><strong>Distancia:</strong> Entre 20cm y 1 metro de la cámara</li>
+            </ul>
+        </div>
+        
+        <div class="no-print">
+            <p><small>Este QR está optimizado para detección AR con AR.js</small></p>
+        </div>
+    </div>
+</body>
+</html> 
