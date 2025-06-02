@@ -21,6 +21,18 @@
             font-family: Arial, sans-serif;
         }
         
+        /* Evitar zoom excesivo en QR mode */
+        video {
+            object-fit: cover !important;
+            width: 100vw !important;
+            height: 100vh !important;
+        }
+        
+        /* Asegurar que a-scene no haga zoom */
+        a-scene {
+            display: block !important;
+        }
+        
         #info {
             position: absolute;
             top: 10px;
@@ -58,6 +70,13 @@
                 padding: 8px 12px;
                 max-width: 250px;
             }
+            
+            /* Prevenir zoom en QR mode en móviles */
+            video {
+                transform: scale(1) !important;
+                max-width: 100vw !important;
+                max-height: 100vh !important;
+            }
         }
     </style>
 </head>
@@ -78,7 +97,7 @@
     <!-- Escena AR -->
     <a-scene
         embedded
-        arjs='sourceType: webcam; debugUIEnabled: false;'
+        arjs='sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;'
         vr-mode-ui="enabled: false"
         device-orientation-permission-ui="enabled: false">
         

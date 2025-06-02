@@ -21,14 +21,17 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Manejo específico para móviles
     if (isMobile) {
-        console.log('Dispositivo móvil detectado - configurando para mejor compatibilidad');
+        console.log('Dispositivo móvil detectado - configurando para QR/barcode');
+        
+        // Configuración específica para QR/barcode en móviles
+        scene.setAttribute('arjs', 'sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3; sourceWidth: 640; sourceHeight: 480; displayWidth: 640; displayHeight: 480;');
         
         // Detectar cuando AR.js esté listo
         window.addEventListener('arjs-video-loaded', function() {
             console.log('Video AR cargado correctamente');
             cameraInitialized = true;
             loader.classList.add('hidden');
-            updateInfoPanel('Cámara lista ✅ Busca el marcador');
+            updateInfoPanel('Cámara lista ✅ Busca el QR');
         });
         
         // Detectar cuando el video esté disponible
