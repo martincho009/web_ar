@@ -116,8 +116,7 @@
         <ul>
             <li>🎯 Hiro → Modelo Base</li>
             <li>🈷️ Kanji → Modelo Base</li>
-            <li>📱 QR #6 → Modelo Base</li>
-            <li>🏗️ Andamio → Buster Drone</li>
+            <li>📱 QR #6 → Buster Drone</li>
         </ul>
         
         <div class="gesture-info">
@@ -176,27 +175,10 @@
             <a-light type="directional" position="1 1 1" color="#ffffff" intensity="0.4"></a-light>
         </a-marker>
         
-        <!-- Marcador QR #6 con modelo base -->
+        <!-- Marcador QR #6 con Buster Drone -->
         <a-marker type="barcode" value="6">
             <a-entity 
                 id="modelo-qr6"
-                gltf-model="#modelo3d"
-                position="0 0 0"
-                scale="0.3 0.3 0.3"
-                rotation="0 0 0"
-                gesture-handler="minScale: 0.1; maxScale: 2"
-                class="clickable"
-                animation-mixer>
-            </a-entity>
-            
-            <a-light type="ambient" color="#ffffff" intensity="0.6"></a-light>
-            <a-light type="directional" position="1 1 1" color="#ffffff" intensity="0.4"></a-light>
-        </a-marker>
-        
-        <!-- Marcador personalizado Andamio con Buster Drone -->
-        <a-marker type="pattern" url="assets/andamio001.patt">
-            <a-entity 
-                id="modelo-andamio"
                 gltf-model="#drone-modelo"
                 position="0 0 0"
                 scale="0.5 0.5 0.5"
