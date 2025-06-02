@@ -87,51 +87,13 @@
             <a-entity id="model-container" position="0 0 0">
                 
                 <!-- Robot hecho con primitivas 3D -->
-                <a-entity id="robot" position="0 0.5 0" class="clickable">
-                    <!-- Cuerpo -->
-                    <a-box 
-                        position="0 0 0" 
-                        width="1" 
-                        height="1.5" 
-                        depth="0.5" 
-                        color="#4CC3D9"
-                        animation="property: rotation; to: 0 360 0; loop: true; dur: 10000; easing: linear">
-                    </a-box>
-                    
-                    <!-- Cabeza -->
-                    <a-sphere 
-                        position="0 1 0" 
-                        radius="0.5" 
-                        color="#EF2D5E">
-                    </a-sphere>
-                    
-                    <!-- Ojos -->
-                    <a-sphere position="-0.2 1.1 0.4" radius="0.1" color="white"></a-sphere>
-                    <a-sphere position="0.2 1.1 0.4" radius="0.1" color="white"></a-sphere>
-                    <a-sphere position="-0.2 1.1 0.45" radius="0.05" color="black"></a-sphere>
-                    <a-sphere position="0.2 1.1 0.45" radius="0.05" color="black"></a-sphere>
-                    
-                    <!-- Brazos -->
-                    <a-cylinder position="-0.8 0 0" rotation="0 0 90" radius="0.15" height="1" color="#FFC65D"></a-cylinder>
-                    <a-cylinder position="0.8 0 0" rotation="0 0 90" radius="0.15" height="1" color="#FFC65D"></a-cylinder>
-                    
-                    <!-- Piernas -->
-                    <a-cylinder position="-0.3 -1 0" radius="0.15" height="1" color="#7BC8A4"></a-cylinder>
-                    <a-cylinder position="0.3 -1 0" radius="0.15" height="1" color="#7BC8A4"></a-cylinder>
-                    
-                    <!-- Animaciones al hacer hover -->
-                    <a-animation 
-                        attribute="scale" 
-                        begin="mouseenter" 
-                        dur="300" 
-                        to="1.2 1.2 1.2">
-                    </a-animation>
-                    <a-animation 
-                        attribute="scale" 
-                        begin="mouseleave" 
-                        dur="300" 
-                        to="1 1 1">
-                    </a-animation>
+                <a-entity 
+                    id="modelo-3d"
+                    gltf-model="assets/modelo.glb"
+                    position="0 0.5 0"
+                    scale="0.5 0.5 0.5"
+                    animation="property: rotation; to: 0 360 0; loop: true; dur: 10000"
+                    class="clickable">
                 </a-entity>
                 
                 <!-- Partículas decorativas -->
