@@ -1,107 +1,119 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marcador Hiro para WebAR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Marcador Hiro para Imprimir</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-            background: #f5f5f5;
-        }
-        
-        .container {
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 20px;
+            text-align: center;
         }
         
         .marker-container {
             background: white;
             padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             margin: 20px 0;
-            border: 2px solid #000;
-            display: inline-block;
         }
         
-        img {
-            max-width: 100%;
-            height: auto;
+        .marker-container img {
+            width: 300px;
+            height: 300px;
+            border: 2px solid #000;
         }
         
         .instructions {
-            text-align: left;
-            margin: 20px 0;
+            background: #e3f2fd;
             padding: 15px;
-            background: #e8f4f8;
-            border-radius: 5px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: left;
         }
         
-        .button {
+        .download-btn {
             background: #4CAF50;
             color: white;
-            padding: 10px 20px;
-            text-decoration: none;
+            padding: 12px 24px;
+            border: none;
             border-radius: 5px;
-            margin: 10px;
+            cursor: pointer;
+            text-decoration: none;
             display: inline-block;
+            margin: 10px;
+            font-size: 16px;
+        }
+        
+        .download-btn:hover {
+            background: #45a049;
         }
         
         @media print {
-            body { background: white; }
-            .container { box-shadow: none; }
-            .no-print { display: none; }
+            .no-print {
+                display: none;
+            }
+            
+            .marker-container {
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="no-print">
         <h1>🎯 Marcador Hiro para WebAR</h1>
+        <p>Este es el marcador estándar más confiable de AR.js</p>
+    </div>
+    
+    <div class="instructions no-print">
+        <h3>📋 Instrucciones:</h3>
+        <ol>
+            <li><strong>Imprime esta página</strong> (Ctrl+P o Cmd+P)</li>
+            <li>Usa <strong>papel blanco</strong> tamaño carta</li>
+            <li>El marcador debe medir <strong>mínimo 8x8 cm</strong></li>
+            <li>Mantenlo <strong>plano</strong> (sin arrugas)</li>
+            <li>Asegúrate de tener <strong>buena iluminación</strong></li>
+        </ol>
+    </div>
+    
+    <div class="marker-container">
+        <h2>Marcador Hiro</h2>
+        <img src="https://raw.githubusercontent.com/AR-js-org/AR.js/master/data/images/hiro.png" alt="Marcador Hiro">
+        <p>Corta por las líneas del borde negro</p>
+    </div>
+    
+    <div class="no-print">
+        <a href="https://raw.githubusercontent.com/AR-js-org/AR.js/master/data/images/hiro.png" 
+           download="hiro-marker.png" 
+           class="download-btn">
+           📥 Descargar PNG
+        </a>
         
-        <div class="instructions no-print">
-            <h3>📋 Instrucciones:</h3>
-            <ol>
-                <li><strong>Imprime esta página</strong> en tamaño carta</li>
-                <li><strong>Recorta el marcador</strong> dejando el borde negro</li>
-                <li><strong>Abre la web AR</strong> en tu móvil</li>
-                <li><strong>Apunta la cámara</strong> al marcador impreso</li>
-                <li><strong>¡Disfruta del AR!</strong> ✨</li>
-            </ol>
-        </div>
+        <a href="https://raw.githubusercontent.com/AR-js-org/AR.js/master/data/images/HIRO.jpg" 
+           download="hiro-marker.jpg" 
+           class="download-btn">
+           📥 Descargar JPG
+        </a>
         
-        <div class="marker-container">
-            <!-- Marcador Hiro optimizado para móviles -->
-            <img src="https://raw.githubusercontent.com/AR-js-org/AR.js/master/data/images/HIRO.jpg" 
-                 alt="Marcador Hiro para AR" 
-                 width="300" 
-                 height="300">
-        </div>
-        
-        <div class="no-print">
-            <h3>🖨️ Opciones:</h3>
-            <button onclick="window.print()" class="button">Imprimir Marcador</button>
-            <a href="index.html" class="button">Probar WebAR</a>
-        </div>
-        
-        <div class="instructions">
-            <h3>⚡ Ventajas del marcador Hiro:</h3>
-            <ul>
-                <li><strong>Optimizado por AR.js:</strong> Máxima compatibilidad</li>
-                <li><strong>Detección rápida:</strong> Especialmente en móviles</li>
-                <li><strong>Tracking estable:</strong> Menos jittering</li>
-                <li><strong>Probado ampliamente:</strong> Funciona en todos los dispositivos</li>
-                <li><strong>Tamaño mínimo:</strong> 5x5 cm para mejor detección</li>
-            </ul>
-        </div>
-        
-        <div class="no-print">
-            <p><small>El marcador Hiro es el estándar de AR.js - garantía de funcionamiento</small></p>
-        </div>
+        <button onclick="window.print()" class="download-btn">
+            🖨️ Imprimir
+        </button>
+    </div>
+    
+    <div class="instructions no-print">
+        <h3>🚀 Cómo probar:</h3>
+        <ol>
+            <li>Imprime este marcador</li>
+            <li>Abre <a href="index.html">la app WebAR</a> en tu móvil</li>
+            <li>Permite el acceso a la cámara</li>
+            <li>Apunta al marcador impreso</li>
+            <li>¡Tu modelo 3D aparecerá!</li>
+        </ol>
     </div>
 </body>
 </html> 

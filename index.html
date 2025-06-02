@@ -49,15 +49,15 @@
 </head>
 <body style="margin: 0; overflow: hidden;">
     <div id="info">
-        📱 Apunta al código QR barcode
+        📱 Apunta al marcador Hiro
     </div>
     
     <a-scene
         vr-mode-ui="enabled: false"
-        arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
+        arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;"
         renderer="antialias: true; alpha: true">
         
-        <a-marker type="barcode" value="1">
+        <a-marker preset="hiro">
             <!-- Modelo 3D -->
             <a-entity 
                 gltf-model="assets/base_basic_pbr.glb"
