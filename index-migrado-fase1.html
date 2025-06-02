@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>WebAR Demo - Múltiples Marcadores (MODERNIZADO)</title>
+    <title>WebAR Demo - FASE 1: A-Frame Actualizado</title>
     
-    <!-- 🚀 VERSIONES MODERNAS 2025 -->
+    <!-- FASE 1: A-Frame moderno + AR.js actual (para verificar compatibilidad) -->
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-    <!-- Componente de gestos para A-Frame -->
+    <!-- Componente de gestos para A-Frame actualizado -->
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
     
     <style>
@@ -29,8 +29,6 @@
             font-size: 13px;
             z-index: 1;
             max-width: 280px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
         }
         
         #info h3 {
@@ -61,57 +59,18 @@
         }
         
         .version-badge {
-            background: linear-gradient(45deg, #4CAF50, #2196F3);
+            background: #2196F3;
             color: white;
             padding: 2px 6px;
             border-radius: 3px;
             font-size: 11px;
             margin-left: 5px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            font-family: Arial, sans-serif;
-        }
-        
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-top: 3px solid #4CAF50;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body style="margin: 0; overflow: hidden;">
-    <!-- Loading overlay -->
-    <div id="loading" class="loading-overlay">
-        <div class="loading-spinner"></div>
-        <div>🚀 Iniciando WebAR moderno...</div>
-        <div style="font-size: 12px; margin-top: 10px; opacity: 0.7;">A-Frame 1.6.0 + AR.js 2025</div>
-    </div>
-    
     <div id="info">
-        <h3>📱 WebAR Moderno <span class="version-badge">2025</span></h3>
+        <h3>📱 WebAR - FASE 1 <span class="version-badge">A-Frame 1.6.0</span></h3>
         <strong>Marcadores disponibles:</strong>
         <ul>
             <li>🎯 Hiro → Modelo Base</li>
@@ -131,10 +90,8 @@
     
     <a-scene 
         embedded 
-        arjs="sourceType: webcam; debugUIEnabled: false; trackingMethod: best; detectionMode: color_and_matrix;"
-        gesture-detector
-        vr-mode-ui="enabled: false"
-        renderer="logarithmicDepthBuffer: true; colorManagement: true; physicallyCorrectLights: true; alpha: true; antialias: true;">
+        arjs="sourceType: webcam; debugUIEnabled: false; trackingMethod: best;"
+        gesture-detector>
         
         <!-- Assets -->
         <a-assets>
@@ -151,8 +108,7 @@
                 scale="0.3 0.3 0.3"
                 rotation="0 0 0"
                 gesture-handler="minScale: 0.1; maxScale: 2"
-                class="clickable"
-                animation-mixer>
+                class="clickable">
             </a-entity>
             
             <a-light type="ambient" color="#ffffff" intensity="0.6"></a-light>
@@ -168,8 +124,7 @@
                 scale="0.3 0.3 0.3"
                 rotation="0 0 0"
                 gesture-handler="minScale: 0.1; maxScale: 2"
-                class="clickable"
-                animation-mixer>
+                class="clickable">
             </a-entity>
             
             <a-light type="ambient" color="#ffffff" intensity="0.6"></a-light>
@@ -185,8 +140,7 @@
                 scale="0.3 0.3 0.3"
                 rotation="0 0 0"
                 gesture-handler="minScale: 0.1; maxScale: 2"
-                class="clickable"
-                animation-mixer>
+                class="clickable">
             </a-entity>
             
             <a-light type="ambient" color="#ffffff" intensity="0.6"></a-light>
@@ -202,8 +156,7 @@
                 scale="0.5 0.5 0.5"
                 rotation="0 0 0"
                 gesture-handler="minScale: 0.1; maxScale: 3"
-                class="clickable"
-                animation-mixer>
+                class="clickable">
             </a-entity>
             
             <!-- Iluminación especial para el drone -->
@@ -216,20 +169,7 @@
     </a-scene>
     
     <script>
-        // 🚀 CÓDIGO MODERNIZADO PARA A-FRAME 1.6.0
-        
-        // Ocultar loading después de que se inicialice
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(() => {
-                const loading = document.getElementById('loading');
-                if (loading) {
-                    loading.style.opacity = '0';
-                    setTimeout(() => loading.remove(), 500);
-                }
-            }, 2000);
-        });
-        
-        // Registrar el componente gesture-detector (MEJORADO)
+        // Registrar el componente gesture-detector (mejorado para A-Frame 1.6.0)
         AFRAME.registerComponent('gesture-detector', {
             init: function () {
                 this.handleStart = this.handleStart.bind(this);
@@ -239,8 +179,6 @@
                 this.el.addEventListener('touchstart', this.handleStart);
                 this.el.addEventListener('touchend', this.handleEnd);
                 this.el.addEventListener('touchmove', this.handleMove);
-                
-                console.log('✅ Gesture detector moderno inicializado');
             },
             
             handleStart: function (evt) {
@@ -250,8 +188,7 @@
             
             handleMove: function (evt) {
                 if (evt.touches.length === 2) {
-                    evt.preventDefault();
-                    
+                    // Gesto de pellizco para escalar
                     const touch1 = evt.touches[0];
                     const touch2 = evt.touches[1];
                     const distance = Math.sqrt(
@@ -261,11 +198,10 @@
                     
                     if (this.initialTouchDistance === null) {
                         this.initialTouchDistance = distance;
-                        // Buscar cualquier modelo visible (OPTIMIZADO)
+                        // Buscar cualquier modelo visible
                         const modelos = document.querySelectorAll('[id^="modelo-"]');
                         for (let modelo of modelos) {
-                            const marker = modelo.closest('a-marker');
-                            if (marker && marker.object3D.visible) {
+                            if (modelo.getAttribute('visible') !== false) {
                                 this.activeModel = modelo;
                                 this.initialScale = modelo.getAttribute('scale');
                                 break;
@@ -276,8 +212,8 @@
                     if (this.activeModel && this.initialScale) {
                         const scaleFactor = distance / this.initialTouchDistance;
                         const gestureData = this.activeModel.getAttribute('gesture-handler');
-                        const minScale = gestureData ? gestureData.minScale : 0.1;
-                        const maxScale = gestureData ? gestureData.maxScale : 3;
+                        const minScale = gestureData.minScale || 0.1;
+                        const maxScale = gestureData.maxScale || 3;
                         
                         const newScale = Math.max(minScale, Math.min(maxScale, 
                             this.initialScale.x * scaleFactor));
@@ -298,7 +234,7 @@
             }
         });
         
-        // Registrar el componente gesture-handler (MEJORADO)
+        // Registrar el componente gesture-handler (mejorado para A-Frame 1.6.0)
         AFRAME.registerComponent('gesture-handler', {
             schema: {
                 minScale: {default: 0.1},
@@ -319,18 +255,11 @@
                 });
                 
                 this.el.addEventListener('touchstart', this.handleRotate);
-                
-                console.log('✅ Gesture handler moderno para:', this.el.id);
             },
             
             handleRotate: function (evt) {
                 if (evt.touches.length === 1) {
-                    evt.preventDefault();
-                    
-                    // Verificar que el modelo esté visible
-                    const marker = this.el.closest('a-marker');
-                    if (!marker || !marker.object3D.visible) return;
-                    
+                    // Gesto de rotación con un dedo
                     this.initialMouseX = evt.touches[0].clientX;
                     this.initialMouseY = evt.touches[0].clientY;
                     
@@ -362,18 +291,10 @@
             }
         });
         
-        // 📊 Log de información moderna
-        console.log('🚀 WebAR MODERNIZADO - Versión 2025');
-        console.log('├── A-Frame: 1.6.0');
-        console.log('├── AR.js: Master (2025)');
-        console.log('├── Controles táctiles: ✅ Mejorados');
-        console.log('├── Detección: ✅ Optimizada');
-        console.log('└── Compatibilidad: ✅ Moderna');
-        
-        // Performance monitoring (opcional)
-        window.addEventListener('load', () => {
-            console.log('⚡ WebAR cargado completamente');
-        });
+        // Log de información para debug
+        console.log('🚀 FASE 1: A-Frame 1.6.0 + AR.js moderno');
+        console.log('✅ Manteniendo misma funcionalidad');
+        console.log('📋 Probando compatibilidad...');
     </script>
 </body>
 </html> 
