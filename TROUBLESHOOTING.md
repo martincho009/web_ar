@@ -1,106 +1,145 @@
 # 🔧 Guía de Solución de Problemas - WebAR
 
-## ❌ El marcador no se detecta
+## ✅ SOLUCIÓN QUE FUNCIONA
 
-### Causas comunes y soluciones:
+Después de muchas pruebas, esta configuración específica es la que funciona correctamente:
 
-### 1. **Problema de HTTPS**
-- ⚠️ **Síntoma**: La cámara funciona pero no detecta marcadores
-- ✅ **Solución**: SIEMPRE usa HTTPS (GitHub Pages lo tiene)
-- ❌ **NO funciona**: Abrir archivo local (file://)
-
-### 2. **Tamaño del marcador**
-- ⚠️ **Síntoma**: Detección intermitente
-- ✅ **Solución**: Imprime mínimo 8x8 cm
-- 💡 **Mejor**: 10x10 cm o más grande
-
-### 3. **Iluminación**
-- ⚠️ **Síntoma**: No detecta o pierde tracking
-- ✅ **Solución**: 
-  - Buena luz sin sombras
-  - Evita reflejos en el papel
-  - No uses flash del móvil
-
-### 4. **Calidad de impresión**
-- ⚠️ **Síntoma**: No detecta nunca
-- ✅ **Solución**:
-  - Imprime en papel blanco mate
-  - Alta calidad (no modo económico)
-  - Bordes negros bien definidos
-
-### 5. **Distancia a la cámara**
-- ⚠️ **Síntoma**: Detecta y pierde constantemente
-- ✅ **Solución**: Mantén 20-50 cm de distancia
-- ❌ **Muy cerca**: < 15 cm no funciona
-- ❌ **Muy lejos**: > 80 cm pierde precisión
-
-## 📱 Problemas específicos de móvil
-
-### Cache del navegador
-```bash
-# En Chrome móvil:
-1. Menú (3 puntos) → Configuración
-2. Privacidad → Borrar datos
-3. Selecciona "Imágenes y archivos en caché"
-4. Borrar datos
-```
-
-### Permisos de cámara
-- Ve a Configuración del teléfono
-- Aplicaciones → Chrome
-- Permisos → Cámara → Permitir
-
-## 🧪 Páginas de prueba
-
-He creado varias versiones para diagnosticar:
-
-1. **`test-hiro-simple.html`** - Versión más básica
-2. **`test-jsdelivr.html`** - CDN alternativo
-3. **`test-barcode.html`** - Para marcadores barcode
-
-### Prueba en este orden:
-1. Primero `test-hiro-simple.html`
-2. Si funciona, prueba `index.html`
-3. Si no funciona, prueba `test-jsdelivr.html`
-
-## 🔍 Debug en Chrome móvil
-
-1. Conecta el móvil por USB
-2. En PC: Chrome → chrome://inspect
-3. Busca tu dispositivo
-4. Click en "inspect" junto a la página
-5. Revisa la consola por errores
-
-## ⚡ Solución rápida
-
-Si nada funciona, usa estas versiones exactas que están probadas:
+### Versiones de librerías:
 ```html
-<script src="https://aframe.io/releases/0.9.0/aframe.min.js"></script>
-<script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.6.2/aframe/build/aframe-ar.js"></script>
+<script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
+<script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.7.7/aframe/build/aframe-ar.js"></script>
 ```
 
-## 🆘 Último recurso
+⚠️ **IMPORTANTE**: No uses versiones más nuevas, pueden tener problemas de detección de marcadores.
 
-Si aún no funciona:
-1. Prueba otro navegador (Firefox móvil)
-2. Prueba otro dispositivo
-3. Verifica que el marcador esté 100% plano
-4. Asegúrate de NO tener zoom activado en el navegador
+## ❌ Problemas comunes y soluciones
 
-## 📊 Compatibilidad conocida
+### 1. **El marcador no se detecta**
 
-✅ **Funciona bien**:
+#### Causas y soluciones:
+- **📏 Tamaño incorrecto**
+  - ✅ Imprime mínimo 8x8 cm (mejor 10x10 cm)
+  - ❌ No uses marcadores pequeños
+
+- **💡 Mala iluminación**
+  - ✅ Luz natural o luz blanca fuerte
+  - ✅ Sin sombras sobre el marcador
+  - ❌ No uses flash del móvil
+
+- **📄 Calidad de impresión**
+  - ✅ Papel blanco mate (sin brillos)
+  - ✅ Impresión de alta calidad
+  - ✅ Bordes negros bien definidos
+  - ❌ No uses papel brillante o fotográfico
+
+- **📱 Distancia incorrecta**
+  - ✅ Mantén 20-50 cm del marcador
+  - ❌ Muy cerca (< 15 cm) no funciona
+  - ❌ Muy lejos (> 80 cm) pierde precisión
+
+### 2. **Cámara distorsionada o congelada**
+
+- **🔄 Limpia caché del navegador**
+  ```
+  Chrome móvil:
+  1. Menú (3 puntos) → Configuración
+  2. Privacidad → Borrar datos
+  3. Selecciona "Caché"
+  4. Borrar datos
+  ```
+
+- **🔍 Desactiva zoom**
+  - Pellizca para verificar que no hay zoom
+  - Reinicia el navegador si es necesario
+
+### 3. **Permisos de cámara**
+
+- **Android:**
+  ```
+  Configuración → Aplicaciones → Chrome → Permisos → Cámara → Permitir
+  ```
+
+- **iOS:**
+  ```
+  Configuración → Safari → Cámara → Permitir
+  ```
+
+## 🌐 Navegadores compatibles
+
+### ✅ Funcionan bien:
 - Chrome Android 70+
 - Safari iOS 11+
 - Firefox Android
 
-⚠️ **Problemas conocidos**:
+### ⚠️ Problemas conocidos:
 - Samsung Internet (algunos modelos)
-- Navegadores "lite"
-- WebView en apps
+- Navegadores "lite" o mini
+- WebView dentro de apps
+- Chrome en iOS (usa Safari mejor)
 
-## 🔗 Referencias
+## 🔍 Debug paso a paso
 
-- [Issue #523 - Marcadores no detectados](https://github.com/jeromeetienne/AR.js/issues/523)
+1. **Verifica HTTPS**
+   - ✅ `https://` (requerido)
+   - ❌ `http://` o `file://` no funcionan
+
+2. **Prueba el marcador Hiro primero**
+   - Es el más confiable
+   - Si funciona, el problema era el marcador
+
+3. **Revisa la consola**
+   - En Chrome: `chrome://inspect` desde PC
+   - Busca errores en rojo
+
+## 💡 Tips importantes
+
+### Para mejor detección:
+1. **Marcador completamente plano** (sin arrugas)
+2. **Fondo uniforme** alrededor del marcador
+3. **Evita movimientos bruscos**
+4. **Espera 2-3 segundos** para que detecte
+
+### Si sigue sin funcionar:
+1. **Prueba otro dispositivo** (puede ser hardware)
+2. **Prueba Firefox** si Chrome falla
+3. **Reinicia el teléfono** (cierra todas las apps)
+4. **Verifica** que no haya otras apps usando la cámara
+
+## 🆘 Último recurso
+
+Si absolutamente nada funciona:
+
+1. **Usa el playground oficial** que sabemos que funciona:
+   - https://webxr.io/webar-playground/app/
+
+2. **Clona exactamente** esta configuración:
+   ```html
+   <!DOCTYPE html>
+   <html>
+   <head>
+       <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
+       <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.7.7/aframe/build/aframe-ar.js"></script>
+   </head>
+   <body style='margin: 0; overflow: hidden;'>
+       <a-scene embedded arjs='sourceType: webcam;'>
+           <a-marker preset='hiro'>
+               <a-box position='0 0.5 0' material='opacity: 0.5;'></a-box>
+           </a-marker>
+           <a-entity camera></a-entity>
+       </a-scene>
+   </body>
+   </html>
+   ```
+
+## 📊 Tabla de compatibilidad rápida
+
+| Dispositivo | Chrome | Safari | Firefox | Samsung |
+|-------------|--------|--------|---------|---------|
+| Android 8+  | ✅     | -      | ✅      | ⚠️      |
+| iOS 11+     | ⚠️     | ✅     | ✅      | -       |
+
+## 🔗 Referencias útiles
+
+- [Issue #523 - Problema de detección](https://github.com/jeromeetienne/AR.js/issues/523)
 - [AR.js Documentation](https://ar-js-org.github.io/AR.js-Docs/)
-- [Playground funcional](https://webxr.io/webar-playground/app/) 
+- [Generador de marcadores](https://ar-js-org.github.io/AR.js/three.js/examples/marker-training/examples/generator.html) 

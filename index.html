@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>WebAR Demo - Hiro</title>
+    <title>WebAR Demo - Modelo 3D</title>
     
-    <!-- Versiones específicas que funcionan según el issue -->
+    <!-- Versiones específicas que funcionan correctamente -->
     <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.7.7/aframe/build/aframe-ar.js"></script>
     
@@ -13,78 +13,84 @@
         body {
             margin: 0;
             overflow: hidden;
+            font-family: Arial, sans-serif;
         }
         
         #info {
             position: fixed;
             top: 10px;
             left: 10px;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.8);
             color: white;
-            padding: 10px;
-            border-radius: 5px;
+            padding: 15px;
+            border-radius: 8px;
             font-size: 14px;
             z-index: 1;
+            max-width: 300px;
+        }
+        
+        #info h3 {
+            margin-top: 0;
+            color: #4CAF50;
+        }
+        
+        #info ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        #info small {
+            color: #ffeb3b;
         }
     </style>
 </head>
 <body style="margin: 0; overflow: hidden;">
     <div id="info">
-        📱 Apunta al marcador Hiro<br>
-        <small>Distancia: 20-50cm</small>
+        <h3>📱 WebAR - Modelo 3D</h3>
+        <strong>Instrucciones:</strong>
+        <ul>
+            <li>Apunta al marcador Hiro impreso</li>
+            <li>Mantén distancia de 20-50cm</li>
+            <li>Asegura buena iluminación</li>
+        </ul>
+        <small>⚠️ Usa papel blanco mate sin reflejos</small>
     </div>
     
     <a-scene 
         embedded 
         arjs="sourceType: webcam; debugUIEnabled: false; trackingMethod: best;">
         
-        <!-- Usamos primitivas simples primero para probar -->
+        <!-- Assets -->
+        <a-assets>
+            <a-asset-item id="modelo3d" src="assets/base_basic_pbr.glb"></a-asset-item>
+        </a-assets>
+        
+        <!-- Marcador Hiro con modelo 3D -->
         <a-marker preset="hiro">
-            <a-box 
-                position="0 0.5 0" 
-                material="color: #4CC3D9">
-            </a-box>
+            <!-- Modelo 3D -->
+            <a-entity 
+                gltf-model="#modelo3d"
+                position="0 0 0"
+                scale="0.3 0.3 0.3"
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 10000">
+            </a-entity>
             
-            <a-sphere 
-                position="0 1.25 -5" 
-                radius="1.25" 
-                color="#EF2D5E">
-            </a-sphere>
-            
-            <a-cylinder 
-                position="1 0.75 -3" 
-                radius="0.5" 
-                height="1.5" 
-                color="#FFC65D">
-            </a-cylinder>
-            
-            <a-plane 
-                position="0 0 -4" 
-                rotation="-90 0 0" 
-                width="4" 
-                height="4" 
-                color="#7BC8A4">
-            </a-plane>
+            <!-- Luz para mejor visualización -->
+            <a-light type="ambient" color="#ffffff" intensity="0.5"></a-light>
+            <a-light type="directional" position="1 1 1" color="#ffffff" intensity="0.5"></a-light>
         </a-marker>
         
         <a-entity camera></a-entity>
     </a-scene>
     
     <script>
-        // Debug simple
-        window.addEventListener('load', () => {
-            console.log('WebAR cargado');
-            
-            // Verificar permisos de cámara
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then(() => console.log('Cámara OK'))
-                .catch(err => console.error('Error cámara:', err));
-                
-            // Ocultar info después de 5 segundos
-            setTimeout(() => {
-                document.getElementById('info').style.display = 'none';
-            }, 5000);
-        });
+        // Ocultar panel de info después de 8 segundos
+        setTimeout(() => {
+            document.getElementById('info').style.display = 'none';
+        }, 8000);
+        
+        // Log de debug
+        console.log('WebAR iniciado con modelo 3D');
     </script>
 </body>
 </html> 

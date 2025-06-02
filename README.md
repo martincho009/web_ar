@@ -1,143 +1,124 @@
-# WebAR con Marcadores QR - AR.js + A-Frame
+# 🎯 WebAR con Marcador Hiro
 
-Una aplicación de Realidad Aumentada Web (WebAR) que funciona directamente en el navegador móvil sin necesidad de instalar apps. Utiliza AR.js y A-Frame para mostrar modelos 3D interactivos sobre marcadores.
+Aplicación de Realidad Aumentada Web que muestra un modelo 3D sobre el marcador Hiro usando AR.js y A-Frame.
 
-## 🚀 Demo en Vivo
+## 🚀 Demo en vivo
 
-Para probar la aplicación:
+👉 **[https://martincho009.github.io/web_ar/](https://martincho009.github.io/web_ar/)**
 
-1. **Abre la aplicación** en tu navegador móvil (se requiere HTTPS)
-2. **Permite el acceso a la cámara** cuando se te solicite
-3. **Apunta la cámara al marcador Hiro** (ver abajo)
-4. **¡Disfruta de la experiencia AR!** Toca el modelo para interactuar
+## ✅ Características
 
-## 📱 Características
+- 📱 **Compatible con móviles** (Android/iOS)
+- 🎯 **Marcador Hiro** estándar de AR.js
+- 🎨 **Modelo 3D** con animación de rotación
+- 🔒 **HTTPS** requerido (GitHub Pages incluido)
+- 📦 **Sin instalación** - funciona en el navegador
 
-- ✅ **100% Web** - No requiere instalación de apps
-- ✅ **Multiplataforma** - Funciona en Android y iOS
-- ✅ **Interactivo** - Toca el modelo 3D para activar animaciones
-- ✅ **Ligero** - Carga rápida y rendimiento optimizado
-- ✅ **Open Source** - Basado en AR.js y A-Frame
+## 📋 Requisitos
 
-## 🎯 Marcador AR
+### Para usar la app:
+- 📱 Smartphone con cámara
+- 🌐 Navegador moderno (Chrome, Firefox, Safari)
+- 🖨️ Marcador Hiro impreso
+- 💡 Buena iluminación
 
-Esta aplicación utiliza el marcador **Hiro** por defecto. Puedes:
+## 🎯 Cómo usar
 
-1. **Descargarlo aquí**: [Marcador Hiro PDF](https://raw.githubusercontent.com/AR-js-org/AR.js/master/data/images/hiro.png)
-2. **Imprimirlo** en papel (recomendado tamaño A4)
-3. **O mostrarlo en otra pantalla**
+1. **Imprime el marcador Hiro**
+   - Abre [hiro-marker.html](https://martincho009.github.io/web_ar/hiro-marker.html)
+   - Descarga o imprime el marcador
+   - Tamaño mínimo: **8x8 cm** (mejor 10x10 cm)
 
-### Crear tu propio marcador personalizado
+2. **Abre la app en tu móvil**
+   - Ve a: https://martincho009.github.io/web_ar/
+   - Permite acceso a la cámara
 
-Para usar un marcador personalizado (por ejemplo, incrustado en un código QR):
+3. **Apunta al marcador**
+   - Mantén distancia de 20-50 cm
+   - Asegura buena iluminación
+   - ¡Verás el modelo 3D aparecer!
 
-1. Visita el [generador de marcadores AR.js](https://ar-js-org.github.io/AR.js/three.js/examples/marker-training/examples/generator.html)
-2. Sube tu imagen (logo o diseño simple en blanco y negro)
-3. Descarga el archivo `.patt` generado
-4. Colócalo en la carpeta `assets/`
-5. Actualiza el HTML cambiando:
-   ```html
-   <a-marker type="pattern" url="assets/tu-marcador.patt">
-   ```
+## ⚠️ Importante - Solución de problemas
 
-## 🛠️ Instalación Local
+### ✅ Lo que FUNCIONA:
+- **Versiones específicas de librerías:**
+  ```html
+  <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
+  <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.7.7/aframe/build/aframe-ar.js"></script>
+  ```
+- **Marcador Hiro** (más confiable que códigos QR)
+- **Papel blanco mate** (sin brillos)
+- **Buena iluminación** sin sombras
 
-### Requisitos
-- Un servidor web local (para servir HTTPS)
-- Navegador móvil moderno con cámara
+### ❌ Problemas comunes:
+1. **No detecta el marcador**
+   - Limpia caché del navegador
+   - Verifica tamaño del marcador (mínimo 8cm)
+   - Prueba con Firefox si Chrome falla
+   - Asegura que el papel esté plano
 
-### Pasos
+2. **Cámara distorsionada**
+   - Desactiva zoom del navegador
+   - Cierra otras apps que usen cámara
+   - Reinicia el navegador
 
-1. **Clona o descarga** este repositorio
+3. **Modelo no aparece**
+   - Verifica conexión a internet
+   - Espera a que cargue completamente
+   - Revisa permisos de cámara
 
-2. **Inicia un servidor local**:
-   ```bash
-   # Con Node.js
-   npx http-server -S -C cert.pem
+## 🛠️ Desarrollo local
 
-   # Con Python
-   python -m http.server 8000
+```bash
+# Clonar repositorio
+git clone https://github.com/martincho009/web_ar.git
 
-   # O usa Live Server en VS Code
-   ```
+# Servir con HTTPS (requerido)
+# Opción 1: Python
+python server.py
 
-3. **Accede desde tu móvil**:
-   - En la misma red WiFi: `https://[TU-IP-LOCAL]:8080`
-   - O usa un túnel como [ngrok](https://ngrok.com) para HTTPS público
+# Opción 2: Node.js
+npm install
+node server-node.js
+```
 
-## 📁 Estructura del Proyecto
+## 📁 Estructura del proyecto
 
 ```
 web_ar/
-├── index.html          # Aplicación principal
-├── js/
-│   └── app.js         # Lógica de interacción
-├── assets/            # Recursos (modelos, patrones, sonidos)
-│   └── (vacío)        # Agrega aquí tus modelos .glb
-└── README.md          # Este archivo
+├── index.html              # App principal
+├── hiro-marker.html        # Página para imprimir marcador
+├── assets/
+│   └── base_basic_pbr.glb  # Modelo 3D
+├── README.md               # Este archivo
+└── TROUBLESHOOTING.md      # Guía detallada de problemas
 ```
 
-## 🎨 Personalización
+## 🔧 Personalización
 
-### Cambiar el modelo 3D
-
-El ejemplo actual usa primitivas de A-Frame (cubos, esferas, cilindros) para crear un robot simple. Para usar un modelo 3D personalizado:
-
-1. Obtén un modelo en formato **glTF/GLB** (recomendado)
-2. Colócalo en la carpeta `assets/`
-3. Modifica el HTML:
+Para cambiar el modelo 3D:
+1. Coloca tu modelo `.glb` o `.gltf` en `assets/`
+2. Actualiza la referencia en `index.html`:
    ```html
-   <a-entity gltf-model="assets/tu-modelo.glb" scale="0.5 0.5 0.5"></a-entity>
+   <a-asset-item id="modelo3d" src="assets/tu-modelo.glb"></a-asset-item>
    ```
 
-### Recursos gratuitos de modelos 3D:
-- [Sketchfab](https://sketchfab.com) (filtrar por descarga gratuita)
-- [Google Poly](https://poly.google.com) (archivo)
-- [Free3D](https://free3d.com)
+## 📚 Recursos
 
-### Agregar más interactividad
+- [AR.js Documentation](https://ar-js-org.github.io/AR.js-Docs/)
+- [A-Frame Documentation](https://aframe.io/docs/)
+- [Modelos 3D gratuitos](https://sketchfab.com/)
 
-Edita `js/app.js` para agregar más comportamientos:
-- Animaciones adicionales
-- Cambios de textura/color
-- Efectos de partículas
-- Sonidos personalizados
+## 🐛 Problemas conocidos
 
-## 🔧 Solución de Problemas
+- Algunas versiones de Samsung Internet tienen problemas
+- WebView en apps puede no funcionar
+- Versiones nuevas de AR.js pueden tener problemas de detección
 
-**La cámara no se activa:**
-- Asegúrate de usar HTTPS (requerido para `getUserMedia`)
-- Verifica los permisos de cámara en tu navegador
-- En iOS, usa Safari (Chrome iOS tiene limitaciones)
+## 📝 Licencia
 
-**El marcador no se detecta:**
-- Mejora la iluminación
-- Imprime el marcador con bordes blancos suficientes
-- Evita reflejos o arrugas en el papel
-- Prueba acercándote/alejándote
-
-**Bajo rendimiento:**
-- Reduce la complejidad del modelo 3D
-- Desactiva las partículas
-- Cierra otras aplicaciones
-
-## 📚 Documentación
-
-- [AR.js Docs](https://ar-js-org.github.io/AR.js-Docs/)
-- [A-Frame Docs](https://aframe.io/docs/)
-- [Tutorial AR.js + A-Frame](https://aframe.io/blog/arjs/)
-
-## 🚀 Próximos Pasos
-
-1. **Integrar con QR**: Genera un código QR que contenga la URL de tu app y el marcador AR incrustado
-2. **Múltiples marcadores**: Agrega más marcadores para diferentes modelos
-3. **AR sin marcadores**: Explora AR.js location-based o image tracking
-4. **Publicar**: Despliega en GitHub Pages, Netlify o Vercel (todos con HTTPS gratuito)
-
-## 📄 Licencia
-
-Este proyecto es de código abierto bajo la licencia MIT. Siéntete libre de usarlo, modificarlo y compartirlo.
+MIT License - Usa este código como quieras
 
 ---
 
-¡Disfruta creando experiencias AR en la web! 🎉 
+💡 **Tip**: Si tienes problemas, revisa [TROUBLESHOOTING.md](TROUBLESHOOTING.md) para soluciones detalladas. 
