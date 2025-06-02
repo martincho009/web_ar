@@ -78,11 +78,9 @@
     <!-- Escena AR -->
     <a-scene
         embedded
-        arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+        arjs='sourceType: webcam; debugUIEnabled: false;'
         vr-mode-ui="enabled: false"
-        device-orientation-permission-ui="enabled: false"
-        renderer="logarithmicDepthBuffer: true; antialias: true; alpha: true;"
-        loading-screen="enabled: false">
+        device-orientation-permission-ui="enabled: false">
         
         <!-- Marcador con patrón personalizado -->
         <a-marker
