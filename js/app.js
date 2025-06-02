@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const loader = document.getElementById('loader');
     const info = document.getElementById('info');
     const marker = document.querySelector('a-marker');
-    const robot = document.getElementById('robot');
+    const modelo = document.getElementById('modelo-3d');
     const particles = document.getElementById('particles');
     
     // Variables de estado
@@ -35,10 +35,12 @@ document.addEventListener('DOMContentLoaded', function() {
         updateInfoPanel('Marcador detectado ✅');
         
         // Activar partículas por un momento
-        particles.setAttribute('particle-system', 'enabled', true);
-        setTimeout(() => {
-            particles.setAttribute('particle-system', 'enabled', false);
-        }, 2000);
+        if (particles) {
+            particles.setAttribute('particle-system', 'enabled', true);
+            setTimeout(() => {
+                particles.setAttribute('particle-system', 'enabled', false);
+            }, 2000);
+        }
     });
     
     marker.addEventListener('markerLost', function() {
@@ -48,76 +50,48 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Interacción con el modelo
-    robot.addEventListener('click', function() {
-        console.log('Click en el modelo!');
-        modelClicked = !modelClicked;
-        
-        // Obtener el cuerpo del robot (la caja principal)
-        const robotBody = robot.querySelector('a-box');
-        
-        // Cambiar animación
-        if (modelClicked) {
-            // Animación de salto
-            robot.setAttribute('animation__jump', {
-                property: 'position',
-                to: '0 1.5 0',
-                dur: 300,
-                easing: 'easeOutQuad'
-            });
+    if (modelo) {
+        modelo.addEventListener('click', function() {
+            console.log('Click en el modelo!');
+            modelClicked = !modelClicked;
             
-            setTimeout(() => {
-                robot.setAttribute('animation__fall', {
+            if (modelClicked) {
+                // Animación de salto
+                modelo.setAttribute('animation__jump', {
                     property: 'position',
-                    to: '0 0.5 0',
+                    to: '0 1.5 0',
                     dur: 300,
-                    easing: 'easeInQuad'
+                    easing: 'easeOutQuad'
                 });
-            }, 300);
-            
-            // Cambiar colores del robot
-            robotBody.setAttribute('color', '#ff0066');
-            robot.querySelector('a-sphere').setAttribute('color', '#ffcc00');
-            
-            // Hacer girar más rápido
-            robotBody.setAttribute('animation', {
-                property: 'rotation',
-                to: '0 360 0',
-                loop: true,
-                dur: 2000,
-                easing: 'linear'
-            });
-            
-            // Activar partículas
-            particles.setAttribute('particle-system', 'enabled', true);
-            setTimeout(() => {
-                particles.setAttribute('particle-system', 'enabled', false);
-            }, 1000);
-            
-            updateInfoPanel('¡Modelo activado! 🎉');
-            
-            // Crear efecto de sonido con Web Audio API
-            playBeep(800, 100);
-            
-        } else {
-            // Restaurar colores originales
-            robotBody.setAttribute('color', '#4CC3D9');
-            robot.querySelector('a-sphere').setAttribute('color', '#EF2D5E');
-            
-            // Restaurar velocidad de rotación normal
-            robotBody.setAttribute('animation', {
-                property: 'rotation',
-                to: '0 360 0',
-                loop: true,
-                dur: 10000,
-                easing: 'linear'
-            });
-            
-            updateInfoPanel('Modelo en reposo 😴');
-            
-            // Sonido más grave
-            playBeep(400, 100);
-        }
-    });
+                
+                setTimeout(() => {
+                    modelo.setAttribute('animation__fall', {
+                        property: 'position',
+                        to: '0 0.5 0',
+                        dur: 300,
+                        easing: 'easeInQuad'
+                    });
+                }, 300);
+                
+                // Activar partículas
+                if (particles) {
+                    particles.setAttribute('particle-system', 'enabled', true);
+                    setTimeout(() => {
+                        particles.setAttribute('particle-system', 'enabled', false);
+                    }, 1000);
+                }
+                
+                updateInfoPanel('¡Modelo activado! 🎉');
+                
+                // Crear efecto de sonido con Web Audio API
+                playBeep(800, 100);
+                
+            } else {
+                updateInfoPanel('Modelo en reposo 😴');
+                playBeep(400, 100);
+            }
+        });
+    }
     
     // Función para crear sonidos simples con Web Audio API
     function playBeep(frequency, duration) {

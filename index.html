@@ -19,21 +19,6 @@
             margin: 0;
             overflow: hidden;
             font-family: Arial, sans-serif;
-            width: 100vw;
-            height: 100vh;
-        }
-        
-        /* Arreglar el canvas de AR para móviles */
-        canvas {
-            width: 100vw !important;
-            height: 100vh !important;
-            object-fit: cover;
-        }
-        
-        /* Contenedor de A-Frame */
-        a-scene {
-            width: 100vw !important;
-            height: 100vh !important;
         }
         
         #info {
@@ -93,11 +78,10 @@
     <!-- Escena AR -->
     <a-scene
         embedded
-        arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3; sourceWidth: 1280; sourceHeight: 720; displayWidth: 1280; displayHeight: 720; videoTexture: true;"
+        arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
         vr-mode-ui="enabled: false"
         device-orientation-permission-ui="enabled: false"
-        renderer="logarithmicDepthBuffer: true; precision: medium; antialias: true; alpha: true;"
-        background="transparent"
+        renderer="logarithmicDepthBuffer: true; antialias: true; alpha: true;"
         loading-screen="enabled: false">
         
         <!-- Marcador con patrón personalizado -->
@@ -116,7 +100,7 @@
                 <!-- Robot hecho con primitivas 3D -->
                 <a-entity 
                     id="modelo-3d"
-                    gltf-model="assets/modelo.glb"
+                    gltf-model="assets/base_basic_pbr.glb"
                     position="0 0.5 0"
                     scale="0.5 0.5 0.5"
                     animation="property: rotation; to: 0 360 0; loop: true; dur: 10000"
