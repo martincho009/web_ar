@@ -2,94 +2,84 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>WebAR Demo - Mobile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>WebAR Demo - Hiro</title>
     
-    <!-- A-Frame 1.4.0 + AR.js versiones específicas y estables -->
-    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.5/aframe/build/aframe-ar.js"></script>
+    <!-- Versiones específicas que funcionan según el issue -->
+    <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.7.7/aframe/build/aframe-ar.js"></script>
     
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
             overflow: hidden;
         }
         
-        /* Info panel mínimo */
         #info {
-            position: absolute;
+            position: fixed;
             top: 10px;
             left: 10px;
             background: rgba(0,0,0,0.7);
             color: white;
-            padding: 8px 12px;
+            padding: 10px;
             border-radius: 5px;
-            font-size: 13px;
-            z-index: 100;
-        }
-        
-        /* Ocultar UI de VR */
-        .a-enter-vr {
-            display: none !important;
-        }
-        
-        /* Video AR centrado */
-        #arjs-video {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
+            font-size: 14px;
+            z-index: 1;
         }
     </style>
 </head>
 <body style="margin: 0; overflow: hidden;">
     <div id="info">
-        📱 Apunta al marcador Hiro
+        📱 Apunta al marcador Hiro<br>
+        <small>Distancia: 20-50cm</small>
     </div>
     
-    <a-scene
-        vr-mode-ui="enabled: false"
-        arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;"
-        renderer="antialias: true; alpha: true">
+    <a-scene 
+        embedded 
+        arjs="sourceType: webcam; debugUIEnabled: false; trackingMethod: best;">
         
+        <!-- Usamos primitivas simples primero para probar -->
         <a-marker preset="hiro">
-            <!-- Modelo 3D -->
-            <a-entity 
-                gltf-model="assets/base_basic_pbr.glb"
-                position="0 0 0"
-                scale="0.5 0.5 0.5"
-                animation="property: rotation; to: 0 360 0; loop: true; dur: 10000">
-            </a-entity>
+            <a-box 
+                position="0 0.5 0" 
+                material="color: #4CC3D9">
+            </a-box>
             
-            <!-- Texto -->
-            <a-text
-                value="WebAR Mobile"
-                position="0 1.5 0"
-                align="center"
-                color="#00FF00"
-                width="4">
-            </a-text>
+            <a-sphere 
+                position="0 1.25 -5" 
+                radius="1.25" 
+                color="#EF2D5E">
+            </a-sphere>
+            
+            <a-cylinder 
+                position="1 0.75 -3" 
+                radius="0.5" 
+                height="1.5" 
+                color="#FFC65D">
+            </a-cylinder>
+            
+            <a-plane 
+                position="0 0 -4" 
+                rotation="-90 0 0" 
+                width="4" 
+                height="4" 
+                color="#7BC8A4">
+            </a-plane>
         </a-marker>
         
         <a-entity camera></a-entity>
     </a-scene>
     
     <script>
-        // Configuración móvil simple
-        document.addEventListener('DOMContentLoaded', function() {
-            // Prevenir gestos de zoom
-            document.addEventListener('gesturestart', function(e) {
-                e.preventDefault();
-            });
+        // Debug simple
+        window.addEventListener('load', () => {
+            console.log('WebAR cargado');
             
-            // Log para debug
-            console.log('WebAR iniciado - Configuración móvil');
-            
+            // Verificar permisos de cámara
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(() => console.log('Cámara OK'))
+                .catch(err => console.error('Error cámara:', err));
+                
             // Ocultar info después de 5 segundos
             setTimeout(() => {
                 document.getElementById('info').style.display = 'none';
