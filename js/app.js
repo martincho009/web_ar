@@ -19,47 +19,43 @@ document.addEventListener('DOMContentLoaded', function() {
     // Detectar si estamos en móvil
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     
-    // Manejo específico para móviles
+    // Configuración mínima para mejor compatibilidad
     if (isMobile) {
-        console.log('Dispositivo móvil detectado - configurando para QR/barcode');
-        
-        // Configuración específica para QR/barcode en móviles
-        scene.setAttribute('arjs', 'sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3; sourceWidth: 640; sourceHeight: 480; displayWidth: 640; displayHeight: 480;');
-        
-        // Detectar cuando AR.js esté listo
-        window.addEventListener('arjs-video-loaded', function() {
-            console.log('Video AR cargado correctamente');
+        console.log('Dispositivo móvil detectado - usando configuración automática');
+    }
+    
+    // Detectar cuando AR.js esté listo
+    window.addEventListener('arjs-video-loaded', function() {
+        console.log('Video AR cargado correctamente');
+        cameraInitialized = true;
+        loader.classList.add('hidden');
+        updateInfoPanel('Cámara lista ✅ Busca el QR');
+    });
+    
+    // Detectar cuando el video esté disponible
+    const checkVideoReady = setInterval(() => {
+        const video = document.querySelector('video');
+        if (video && video.videoWidth > 0) {
+            console.log('Stream de video detectado:', video.videoWidth + 'x' + video.videoHeight);
             cameraInitialized = true;
             loader.classList.add('hidden');
-            updateInfoPanel('Cámara lista ✅ Busca el QR');
-        });
-        
-        // Detectar cuando el video esté disponible
-        const checkVideoReady = setInterval(() => {
-            const video = document.querySelector('video');
-            if (video && video.videoWidth > 0) {
-                console.log('Stream de video detectado:', video.videoWidth + 'x' + video.videoHeight);
-                cameraInitialized = true;
-                loader.classList.add('hidden');
-                updateInfoPanel('Cámara funcionando ✅');
-                clearInterval(checkVideoReady);
-            }
-        }, 500);
-        
-        // Timeout para problemas de cámara
-        setTimeout(() => {
-            if (!cameraInitialized) {
-                console.log('Problema de cámara detectado - mostrando ayuda');
-                loader.innerHTML = `
-                    <h3>Problema con la cámara</h3>
-                    <p>🔄 Intenta recargar la página</p>
-                    <p>📱 Asegúrate de permitir el acceso a cámara</p>
-                    <button onclick="location.reload()" style="padding: 10px 20px; margin: 10px; background: #4CAF50; color: white; border: none; border-radius: 5px;">Recargar</button>
-                `;
-                updateInfoPanel('Error de cámara - ver instrucciones');
-            }
-        }, 8000);
-    }
+            updateInfoPanel('Cámara funcionando ✅');
+            clearInterval(checkVideoReady);
+        }
+    }, 500);
+    
+    // Timeout para problemas de cámara
+    setTimeout(() => {
+        if (!cameraInitialized) {
+            console.log('Problema de cámara detectado');
+            loader.innerHTML = `
+                <h3>Problema con la cámara</h3>
+                <p>🔄 Intenta recargar la página</p>
+                <p>📱 Permite el acceso a cámara</p>
+                <button onclick="location.reload()" style="padding: 10px 20px; margin: 10px; background: #4CAF50; color: white; border: none; border-radius: 5px;">Recargar</button>
+            `;
+        }
+    }, 6000);
     
     // Ocultar loader cuando AR esté listo (fallback)
     scene.addEventListener('loaded', function() {

@@ -63,7 +63,7 @@
             display: none;
         }
         
-        /* Optimizaciones adicionales para móviles */
+        /* Optimizaciones para móviles */
         @media (max-width: 768px) {
             #info {
                 font-size: 12px;
@@ -84,7 +84,7 @@
     <!-- Panel de información -->
     <div id="info">
         <h3 style="margin: 0 0 10px 0;">WebAR Demo</h3>
-        <p style="margin: 5px 0;">📱 Apunta la cámara al código QR</p>
+        <p style="margin: 5px 0;">📱 Apunta la cámara al marcador Hiro</p>
         <p style="margin: 5px 0;">👆 Toca el modelo para interactuar</p>
     </div>
     
@@ -97,15 +97,14 @@
     <!-- Escena AR -->
     <a-scene
         embedded
-        arjs='sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;'
+        arjs='sourceType: webcam; debugUIEnabled: false;'
         vr-mode-ui="enabled: false"
         device-orientation-permission-ui="enabled: false">
         
-        <!-- Marcador con QR/Barcode -->
+        <!-- Marcador Hiro (más confiable para móviles) -->
         <a-marker
             id="marker"
-            type="barcode"
-            value="1"
+            preset="hiro"
             smooth="true"
             smoothCount="10"
             smoothTolerance="0.01"
