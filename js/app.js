@@ -17,6 +17,45 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log('WebAR iniciado - optimizado para móviles');
     
+    // Eliminar cualquier elemento VR que aparezca dinámicamente
+    const removeVRElements = () => {
+        const vrElements = document.querySelectorAll('.a-enter-vr, .a-enter-vr-button, .a-orientation-modal, .a-enter-ar-button, .rs-base');
+        vrElements.forEach(el => {
+            if (el) {
+                el.style.display = 'none';
+                el.style.visibility = 'hidden';
+                el.remove();
+            }
+        });
+    };
+    
+    // Ejecutar inmediatamente y cada segundo por si aparecen elementos VR
+    removeVRElements();
+    setInterval(removeVRElements, 1000);
+    
+    // Observer para eliminar elementos VR que aparezcan dinámicamente
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+                if (node.nodeType === 1) { // Element node
+                    if (node.classList && (
+                        node.classList.contains('a-enter-vr') ||
+                        node.classList.contains('a-enter-vr-button') ||
+                        node.classList.contains('a-orientation-modal') ||
+                        node.classList.contains('rs-base')
+                    )) {
+                        node.remove();
+                    }
+                }
+            });
+        });
+    });
+    
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+    
     // Prevenir zoom en móviles
     document.addEventListener('touchstart', function(e) {
         if (e.touches.length > 1) {

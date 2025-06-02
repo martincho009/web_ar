@@ -45,6 +45,33 @@
             left: 0 !important;
         }
         
+        /* Ocultar TODOS los elementos VR y UI de A-Frame */
+        .a-enter-vr,
+        .a-enter-vr-button,
+        .a-enter-vr-modal,
+        .a-orientation-modal,
+        .a-enter-ar,
+        .a-enter-ar-button,
+        .a-loader,
+        .a-canvas,
+        #aframeInspectorContainer,
+        .rs-base {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+        
+        /* Forzar que canvas ocupe toda la pantalla */
+        canvas {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            z-index: 1 !important;
+        }
+        
         /* Video de cámara optimizado para vertical */
         video {
             width: 100vw !important;
@@ -129,7 +156,11 @@
         embedded
         arjs='sourceType: webcam; debugUIEnabled: false;'
         vr-mode-ui="enabled: false"
-        device-orientation-permission-ui="enabled: false">
+        device-orientation-permission-ui="enabled: false"
+        keyboard-shortcuts="enterVR: false; exitVR: false"
+        loading-screen="enabled: false"
+        stats="false"
+        inspector="url: false">
         
         <!-- Marcador Hiro (más confiable para móviles) -->
         <a-marker
