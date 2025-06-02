@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marcador Hiro para AR</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            background-color: #f5f5f5;
+        }
+        .marker-container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+        .marker-image {
+            max-width: 100%;
+            width: 400px;
+            height: auto;
+            border: 2px solid #333;
+        }
+        .instructions {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        h1 {
+            color: #333;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #2196F3;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px;
+        }
+        .button:hover {
+            background: #1976D2;
+        }
+        @media print {
+            body {
+                background: white;
+            }
+            .instructions, .no-print {
+                display: none;
+            }
+            .marker-container {
+                box-shadow: none;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Marcador Hiro para Realidad Aumentada</h1>
+    
+    <div class="instructions">
+        <h2>📋 Instrucciones de Uso:</h2>
+        <ol>
+            <li><strong>Imprime esta página</strong> o muestra el marcador en otra pantalla</li>
+            <li><strong>Abre la aplicación WebAR</strong> en tu navegador móvil</li>
+            <li><strong>Permite el acceso a la cámara</strong> cuando se solicite</li>
+            <li><strong>Apunta la cámara al marcador</strong> Hiro de abajo</li>
+            <li><strong>¡Disfruta la experiencia AR!</strong> El modelo 3D aparecerá sobre el marcador</li>
+        </ol>
+        
+        <h3>💡 Consejos:</h3>
+        <ul>
+            <li>Imprime en tamaño A4 para mejores resultados</li>
+            <li>Mantén el marcador plano y sin arrugas</li>
+            <li>Asegúrate de tener buena iluminación</li>
+            <li>El marcador debe verse completo en la cámara</li>
+        </ul>
+    </div>
+    
+    <div class="marker-container">
+        <h2>Marcador Hiro</h2>
+        <img src="https://raw.githubusercontent.com/AR-js-org/AR.js/master/data/images/hiro.png" 
+             alt="Marcador Hiro" 
+             class="marker-image">
+        <p style="margin-top: 20px; color: #666;">
+            Mantén los bordes blancos alrededor del marcador al imprimir
+        </p>
+    </div>
+    
+    <div class="no-print">
+        <a href="index.html" class="button">Abrir Aplicación AR</a>
+        <a href="javascript:window.print()" class="button">Imprimir Marcador</a>
+        
+        <h3>🔗 Enlaces Útiles:</h3>
+        <ul style="text-align: left; display: inline-block;">
+            <li><a href="https://raw.githubusercontent.com/AR-js-org/AR.js/master/data/images/hiro.png" download>Descargar imagen del marcador</a></li>
+            <li><a href="https://github.com/AR-js-org/AR.js/blob/master/data/images/hiro.pdf">Descargar PDF del marcador</a></li>
+            <li><a href="assets/INSTRUCCIONES_MARCADOR.md">Crear marcador personalizado</a></li>
+        </ul>
+    </div>
+</body>
+</html> 

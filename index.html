@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebAR con Marcadores QR - AR.js + A-Frame</title>
+    
+    <!-- Incluir A-Frame -->
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    
+    <!-- Incluir AR.js para A-Frame -->
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    
+    <!-- Incluir componente de animación mixer para modelos glTF con animaciones -->
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        
+        #info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            z-index: 999;
+            max-width: 300px;
+        }
+        
+        #loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            z-index: 1000;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Panel de información -->
+    <div id="info">
+        <h3 style="margin: 0 0 10px 0;">WebAR Demo</h3>
+        <p style="margin: 5px 0;">📱 Apunta la cámara al marcador Hiro</p>
+        <p style="margin: 5px 0;">👆 Toca el modelo para interactuar</p>
+    </div>
+    
+    <!-- Loader -->
+    <div id="loader">
+        <h3>Iniciando cámara AR...</h3>
+        <p>Por favor, permite el acceso a la cámara</p>
+    </div>
+    
+    <!-- Escena AR -->
+    <a-scene
+        embedded
+        arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
+        vr-mode-ui="enabled: false"
+        device-orientation-permission-ui="enabled: false">
+        
+        <!-- Marcador con patrón personalizado -->
+        <a-marker
+            id="marker"
+            type="pattern"
+            preset="hiro"
+            smooth="true"
+            smoothCount="10"
+            smoothTolerance="0.01"
+            smoothThreshold="5">
+            
+            <!-- Contenedor para el modelo 3D -->
+            <a-entity id="model-container" position="0 0 0">
+                
+                <!-- Robot hecho con primitivas 3D -->
+                <a-entity id="robot" position="0 0.5 0" class="clickable">
+                    <!-- Cuerpo -->
+                    <a-box 
+                        position="0 0 0" 
+                        width="1" 
+                        height="1.5" 
+                        depth="0.5" 
+                        color="#4CC3D9"
+                        animation="property: rotation; to: 0 360 0; loop: true; dur: 10000; easing: linear">
+                    </a-box>
+                    
+                    <!-- Cabeza -->
+                    <a-sphere 
+                        position="0 1 0" 
+                        radius="0.5" 
+                        color="#EF2D5E">
+                    </a-sphere>
+                    
+                    <!-- Ojos -->
+                    <a-sphere position="-0.2 1.1 0.4" radius="0.1" color="white"></a-sphere>
+                    <a-sphere position="0.2 1.1 0.4" radius="0.1" color="white"></a-sphere>
+                    <a-sphere position="-0.2 1.1 0.45" radius="0.05" color="black"></a-sphere>
+                    <a-sphere position="0.2 1.1 0.45" radius="0.05" color="black"></a-sphere>
+                    
+                    <!-- Brazos -->
+                    <a-cylinder position="-0.8 0 0" rotation="0 0 90" radius="0.15" height="1" color="#FFC65D"></a-cylinder>
+                    <a-cylinder position="0.8 0 0" rotation="0 0 90" radius="0.15" height="1" color="#FFC65D"></a-cylinder>
+                    
+                    <!-- Piernas -->
+                    <a-cylinder position="-0.3 -1 0" radius="0.15" height="1" color="#7BC8A4"></a-cylinder>
+                    <a-cylinder position="0.3 -1 0" radius="0.15" height="1" color="#7BC8A4"></a-cylinder>
+                    
+                    <!-- Animaciones al hacer hover -->
+                    <a-animation 
+                        attribute="scale" 
+                        begin="mouseenter" 
+                        dur="300" 
+                        to="1.2 1.2 1.2">
+                    </a-animation>
+                    <a-animation 
+                        attribute="scale" 
+                        begin="mouseleave" 
+                        dur="300" 
+                        to="1 1 1">
+                    </a-animation>
+                </a-entity>
+                
+                <!-- Partículas decorativas -->
+                <a-entity
+                    id="particles"
+                    position="0 2 0"
+                    particle-system="
+                        preset: dust;
+                        particleCount: 100;
+                        color: #0066ff,#00ffff;
+                        size: 0.3;
+                        opacity: 0.8;
+                        velocityValue: 0 0.3 0;
+                        velocitySpread: 0.5 0 0.5;
+                        accelerationValue: 0 -0.1 0;
+                        duration: 2;
+                        enabled: false">
+                </a-entity>
+                
+                <!-- Texto flotante -->
+                <a-text
+                    value="¡Hola Mundo AR!"
+                    position="0 2.5 0"
+                    align="center"
+                    color="#00ff88"
+                    font="kelsonsans"
+                    width="6"
+                    animation="property: position; to: 0 3 0; dir: alternate; dur: 2000; loop: true; easing: easeInOutSine">
+                </a-text>
+                
+                <!-- Luz para el modelo -->
+                <a-light type="point" color="#ffffff" intensity="1" position="0 3 2"></a-light>
+            </a-entity>
+        </a-marker>
+        
+        <!-- Cámara con cursor para interacción -->
+        <a-entity camera>
+            <a-cursor
+                raycaster="objects: .clickable"
+                animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 1 1 1; dur: 150"
+                animation__fusing="property: scale; startEvents: fusing; from: 1 1 1; to: 0.1 0.1 0.1; dur: 1500"
+                animation__mouseleave="property: scale; startEvents: mouseleave; to: 1 1 1; dur: 150">
+            </a-cursor>
+        </a-entity>
+    </a-scene>
+    
+    <!-- Scripts de interacción -->
+    <script src="js/app.js"></script>
+</body>
+</html> 
