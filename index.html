@@ -112,10 +112,9 @@
     
     <div id="info">
         <h3>📱 WebAR Moderno <span class="version-badge">2025</span></h3>
-        <strong>Marcadores disponibles:</strong>
+        <strong>Marcadores QR disponibles:</strong>
         <ul>
-            <li>🎯 Hiro → Modelo Base</li>
-            <li>🈷️ Kanji → Modelo Base</li>
+            <li>📱 QR #4 → Modelo Base</li>
             <li>📱 QR #6 → Buster Drone</li>
         </ul>
         
@@ -125,7 +124,7 @@
             • <strong>2 dedos:</strong> Pellizcar para escalar
         </div>
         
-        <small>⚠️ Usa papel blanco mate sin reflejos</small>
+        <small>⚠️ Usa papel blanco mate sin reflejos (mínimo 6x6cm)</small>
     </div>
     
     <a-scene 
@@ -141,27 +140,10 @@
             <a-asset-item id="drone-modelo" src="assets/buster_drone.glb"></a-asset-item>
         </a-assets>
         
-        <!-- Marcador Hiro con modelo base -->
-        <a-marker preset="hiro">
+        <!-- Marcador QR #4 con modelo base -->
+        <a-marker type="barcode" value="4">
             <a-entity 
-                id="modelo-hiro"
-                gltf-model="#modelo3d"
-                position="0 0 0"
-                scale="0.3 0.3 0.3"
-                rotation="0 0 0"
-                gesture-handler="minScale: 0.1; maxScale: 2"
-                class="clickable"
-                animation-mixer>
-            </a-entity>
-            
-            <a-light type="ambient" color="#ffffff" intensity="0.6"></a-light>
-            <a-light type="directional" position="1 1 1" color="#ffffff" intensity="0.4"></a-light>
-        </a-marker>
-        
-        <!-- Marcador Kanji con modelo base -->
-        <a-marker preset="kanji">
-            <a-entity 
-                id="modelo-kanji"
+                id="modelo-qr4"
                 gltf-model="#modelo3d"
                 position="0 0 0"
                 scale="0.3 0.3 0.3"
@@ -348,9 +330,9 @@
         console.log('🚀 WebAR MODERNIZADO - Versión 2025');
         console.log('├── A-Frame: 1.6.0');
         console.log('├── AR.js: Master (2025)');
-        console.log('├── Controles táctiles: ✅ Mejorados');
-        console.log('├── Detección: ✅ Optimizada');
-        console.log('└── Compatibilidad: ✅ Moderna');
+        console.log('├── QR #4: base_basic_pbr.glb');
+        console.log('├── QR #6: buster_drone.glb');
+        console.log('└── Controles táctiles: ✅ Mejorados');
         
         // Performance monitoring (opcional)
         window.addEventListener('load', () => {
