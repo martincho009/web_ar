@@ -15,7 +15,12 @@ document.addEventListener('DOMContentLoaded', function() {
     let markerVisible = false;
     let modelClicked = false;
     
-    // Ocultar loader cuando la escena esté lista
+    // Optimizar para móviles
+    if (window.innerWidth <= 768) {
+        scene.setAttribute('arjs', 'trackingMethod: best; sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3; sourceWidth: 640; sourceHeight: 480; displayWidth: 640; displayHeight: 480; videoTexture: true;');
+    }
+    
+    // Ocultar loader cuando AR esté listo
     scene.addEventListener('loaded', function() {
         console.log('Escena AR cargada correctamente');
         setTimeout(() => {

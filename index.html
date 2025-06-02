@@ -19,6 +19,21 @@
             margin: 0;
             overflow: hidden;
             font-family: Arial, sans-serif;
+            width: 100vw;
+            height: 100vh;
+        }
+        
+        /* Arreglar el canvas de AR para móviles */
+        canvas {
+            width: 100vw !important;
+            height: 100vh !important;
+            object-fit: cover;
+        }
+        
+        /* Contenedor de A-Frame */
+        a-scene {
+            width: 100vw !important;
+            height: 100vh !important;
         }
         
         #info {
@@ -50,6 +65,15 @@
         .hidden {
             display: none;
         }
+        
+        /* Optimizaciones adicionales para móviles */
+        @media (max-width: 768px) {
+            #info {
+                font-size: 12px;
+                padding: 8px 12px;
+                max-width: 250px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -69,9 +93,12 @@
     <!-- Escena AR -->
     <a-scene
         embedded
-        arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
+        arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3; sourceWidth: 1280; sourceHeight: 720; displayWidth: 1280; displayHeight: 720; videoTexture: true;"
         vr-mode-ui="enabled: false"
-        device-orientation-permission-ui="enabled: false">
+        device-orientation-permission-ui="enabled: false"
+        renderer="logarithmicDepthBuffer: true; precision: medium; antialias: true; alpha: true;"
+        background="transparent"
+        loading-screen="enabled: false">
         
         <!-- Marcador con patrón personalizado -->
         <a-marker
