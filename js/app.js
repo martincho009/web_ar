@@ -1,6 +1,5 @@
-// app.js - Lógica de interacción para WebAR
+// app.js - Optimizado SOLO para dispositivos móviles
 
-// Esperar a que el DOM esté cargado
 document.addEventListener('DOMContentLoaded', function() {
     
     // Referencias a elementos
@@ -16,90 +15,108 @@ document.addEventListener('DOMContentLoaded', function() {
     let modelClicked = false;
     let cameraInitialized = false;
     
-    // Detectar si estamos en móvil
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    console.log('WebAR iniciado - optimizado para móviles');
     
-    // Configuración mínima para mejor compatibilidad
-    if (isMobile) {
-        console.log('Dispositivo móvil detectado - usando configuración automática');
+    // Prevenir zoom en móviles
+    document.addEventListener('touchstart', function(e) {
+        if (e.touches.length > 1) {
+            e.preventDefault();
+        }
+    }, { passive: false });
+    
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function(e) {
+        const now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) {
+            e.preventDefault();
+        }
+        lastTouchEnd = now;
+    }, false);
+    
+    // Orientación de pantalla
+    function handleOrientationChange() {
+        setTimeout(() => {
+            // Forzar recalculo de dimensiones
+            if (scene && scene.resize) {
+                scene.resize();
+            }
+        }, 500);
     }
+    
+    window.addEventListener('orientationchange', handleOrientationChange);
+    window.addEventListener('resize', handleOrientationChange);
     
     // Detectar cuando AR.js esté listo
     window.addEventListener('arjs-video-loaded', function() {
-        console.log('Video AR cargado correctamente');
+        console.log('Video AR cargado - móvil');
         cameraInitialized = true;
         loader.classList.add('hidden');
-        updateInfoPanel('Cámara lista ✅ Busca el QR');
+        updateInfoPanel('Cámara lista ✅');
     });
     
-    // Detectar cuando el video esté disponible
+    // Detectar stream de video
     const checkVideoReady = setInterval(() => {
         const video = document.querySelector('video');
         if (video && video.videoWidth > 0) {
-            console.log('Stream de video detectado:', video.videoWidth + 'x' + video.videoHeight);
+            console.log('Stream móvil:', video.videoWidth + 'x' + video.videoHeight);
             cameraInitialized = true;
             loader.classList.add('hidden');
-            updateInfoPanel('Cámara funcionando ✅');
             clearInterval(checkVideoReady);
         }
-    }, 500);
+    }, 300);
     
-    // Timeout para problemas de cámara
+    // Timeout para problemas
     setTimeout(() => {
         if (!cameraInitialized) {
-            console.log('Problema de cámara detectado');
             loader.innerHTML = `
-                <h3>Problema con la cámara</h3>
-                <p>🔄 Intenta recargar la página</p>
-                <p>📱 Permite el acceso a cámara</p>
-                <button onclick="location.reload()" style="padding: 10px 20px; margin: 10px; background: #4CAF50; color: white; border: none; border-radius: 5px;">Recargar</button>
+                <h3>⚠️ Problema de cámara</h3>
+                <p>Permite acceso a la cámara</p>
+                <button onclick="location.reload()" style="padding: 12px 24px; margin: 15px; background: #4CAF50; color: white; border: none; border-radius: 8px; font-size: 14px;">🔄 Reintentar</button>
             `;
         }
-    }, 6000);
+    }, 5000);
     
-    // Ocultar loader cuando AR esté listo (fallback)
+    // Carga de escena (fallback)
     scene.addEventListener('loaded', function() {
-        console.log('Escena AR cargada correctamente');
+        console.log('Escena cargada');
         setTimeout(() => {
             if (!cameraInitialized) {
                 loader.classList.add('hidden');
             }
-        }, 3000);
+        }, 2000);
     });
     
-    // Detectar cuando el marcador es visible/invisible
+    // Detección de marcador
     marker.addEventListener('markerFound', function() {
-        console.log('Marcador detectado!');
+        console.log('🎯 Marcador detectado!');
         markerVisible = true;
         updateInfoPanel('Marcador detectado ✅');
         
-        // Activar partículas por un momento
         if (particles) {
             particles.setAttribute('particle-system', 'enabled', true);
             setTimeout(() => {
                 particles.setAttribute('particle-system', 'enabled', false);
-            }, 2000);
+            }, 1500);
         }
     });
     
     marker.addEventListener('markerLost', function() {
         console.log('Marcador perdido');
         markerVisible = false;
-        updateInfoPanel('Buscando marcador... 🔍');
+        updateInfoPanel('Busca el marcador Hiro 🔍');
     });
     
-    // Interacción con el modelo
+    // Interacción con modelo
     if (modelo) {
         modelo.addEventListener('click', function() {
-            console.log('Click en el modelo!');
+            console.log('🎮 Click en modelo!');
             modelClicked = !modelClicked;
             
             if (modelClicked) {
-                // Animación de salto
                 modelo.setAttribute('animation__jump', {
                     property: 'position',
                     to: '0 1.5 0',
-                    dur: 300,
+                    dur: 250,
                     easing: 'easeOutQuad'
                 });
                 
@@ -107,27 +124,24 @@ document.addEventListener('DOMContentLoaded', function() {
                     modelo.setAttribute('animation__fall', {
                         property: 'position',
                         to: '0 0.5 0',
-                        dur: 300,
+                        dur: 250,
                         easing: 'easeInQuad'
                     });
-                }, 300);
+                }, 250);
                 
-                // Activar partículas
                 if (particles) {
                     particles.setAttribute('particle-system', 'enabled', true);
                     setTimeout(() => {
                         particles.setAttribute('particle-system', 'enabled', false);
-                    }, 1000);
+                    }, 800);
                 }
                 
                 updateInfoPanel('¡Modelo activado! 🎉');
-                
-                // Crear efecto de sonido con Web Audio API
-                playBeep(800, 100);
+                playBeep(800, 80);
                 
             } else {
                 updateInfoPanel('Modelo en reposo 😴');
-                playBeep(400, 100);
+                playBeep(400, 80);
             }
         });
     }
@@ -202,10 +216,6 @@ document.addEventListener('DOMContentLoaded', function() {
         window.addEventListener('touchend', requestOrientationPermission, { once: true });
     }
     
-    if (!isMobile) {
-        updateInfoPanel('Mejor experiencia en dispositivos móviles 📱');
-    }
-    
     // Manejo de visibilidad de la página
     document.addEventListener('visibilitychange', function() {
         if (document.hidden) {
@@ -218,6 +228,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Log de información del sistema
     console.log('WebAR App iniciada');
     console.log('A-Frame version:', AFRAME.version);
-    console.log('Dispositivo móvil:', isMobile);
+    console.log('Dispositivo móvil:', true);
     console.log('User Agent:', navigator.userAgent);
 }); 
