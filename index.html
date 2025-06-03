@@ -239,12 +239,24 @@
                     
                     if (this.activeModel && this.initialScale) {
                         const scaleFactor = distance / this.initialTouchDistance;
+                        
+                        // 🔧 REDUCIR SENSIBILIDAD DEL PELLIZCO
+                        // Solo aplicar cambios si el movimiento es significativo (threshold)
+                        const changeThreshold = 0.05; // 5% de cambio mínimo
+                        if (Math.abs(scaleFactor - 1) < changeThreshold) {
+                            return; // No hacer cambios muy pequeños
+                        }
+                        
+                        // Aplicar factor de amortiguación para suavizar el escalado
+                        const dampingFactor = 0.3; // Reduce la sensibilidad al 30%
+                        const smoothScaleFactor = 1 + (scaleFactor - 1) * dampingFactor;
+                        
                         const gestureData = this.activeModel.getAttribute('gesture-handler');
                         const minScale = gestureData ? gestureData.minScale : 0.1;
                         const maxScale = gestureData ? gestureData.maxScale : 3;
                         
                         const newScale = Math.max(minScale, Math.min(maxScale, 
-                            this.initialScale.x * scaleFactor));
+                            this.initialScale.x * smoothScaleFactor));
                         
                         this.activeModel.setAttribute('scale', {
                             x: newScale,
