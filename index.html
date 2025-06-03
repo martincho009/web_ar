@@ -100,6 +100,19 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        #debug-info {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(255,0,0,0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            z-index: 1000;
+            display: none;
+        }
     </style>
 </head>
 <body style="margin: 0; overflow: hidden;">
@@ -119,6 +132,9 @@
             • <strong>2 dedos:</strong> Pellizcar para escalar
         </div>
     </div>
+
+    <!-- Debug info -->
+    <div id="debug-info"></div>
     
     <a-scene 
         embedded 
@@ -129,8 +145,8 @@
         
         <!-- Assets -->
         <a-assets>
-            <a-asset-item id="modelo3d" src="assets/base_basic_pbr.glb"></a-asset-item>
-            <a-asset-item id="drone-modelo" src="assets/buster_drone.glb"></a-asset-item>
+            <a-asset-item id="modelo3d" src="./assets/base_basic_pbr.glb"></a-asset-item>
+            <a-asset-item id="drone-modelo" src="./assets/buster_drone.glb"></a-asset-item>
         </a-assets>
         
         <!-- Marcador QR #4 con modelo base -->
@@ -175,15 +191,82 @@
     <script>
         // 🚀 CÓDIGO MODERNIZADO PARA A-FRAME 1.6.0
         
+        // Variables globales para debug
+        let debugMode = false;
+        let debugInfo = document.getElementById('debug-info');
+        
+        // Función para mostrar debug info
+        function showDebug(message) {
+            if (debugMode) {
+                debugInfo.style.display = 'block';
+                debugInfo.innerHTML += message + '<br>';
+                console.log('🐛 DEBUG:', message);
+            }
+        }
+        
+        // Activar debug con doble tap
+        let tapCount = 0;
+        document.addEventListener('touchstart', function() {
+            tapCount++;
+            setTimeout(() => tapCount = 0, 500);
+            if (tapCount === 3) {
+                debugMode = !debugMode;
+                if (!debugMode) {
+                    debugInfo.style.display = 'none';
+                    debugInfo.innerHTML = '';
+                }
+                showDebug('Debug mode: ' + (debugMode ? 'ON' : 'OFF'));
+            }
+        });
+        
         // Ocultar loading después de que se inicialice
         document.addEventListener('DOMContentLoaded', function() {
+            showDebug('DOM Content Loaded');
             setTimeout(() => {
                 const loading = document.getElementById('loading');
                 if (loading) {
                     loading.style.opacity = '0';
                     setTimeout(() => loading.remove(), 500);
                 }
+                showDebug('Loading screen removed');
             }, 2000);
+        });
+        
+        // Event listeners para AR
+        document.addEventListener('DOMContentLoaded', function() {
+            const scene = document.querySelector('a-scene');
+            
+            scene.addEventListener('loaded', function() {
+                showDebug('A-Scene loaded');
+            });
+            
+            scene.addEventListener('arjs-video-loaded', function() {
+                showDebug('AR.js video loaded');
+            });
+            
+            // Listeners para marcadores
+            const markers = document.querySelectorAll('a-marker');
+            markers.forEach((marker, index) => {
+                marker.addEventListener('markerFound', function() {
+                    showDebug(`Marcador ${marker.getAttribute('value')} encontrado`);
+                });
+                
+                marker.addEventListener('markerLost', function() {
+                    showDebug(`Marcador ${marker.getAttribute('value')} perdido`);
+                });
+            });
+            
+            // Listeners para modelos
+            const models = document.querySelectorAll('[gltf-model]');
+            models.forEach(model => {
+                model.addEventListener('model-loaded', function() {
+                    showDebug(`Modelo ${model.id} cargado correctamente`);
+                });
+                
+                model.addEventListener('model-error', function(evt) {
+                    showDebug(`Error cargando modelo ${model.id}: ${evt.detail}`);
+                });
+            });
         });
         
         // Registrar el componente gesture-detector (MEJORADO)
@@ -198,6 +281,7 @@
                 this.el.addEventListener('touchmove', this.handleMove);
                 
                 console.log('✅ Gesture detector moderno inicializado');
+                showDebug('Gesture detector inicializado');
             },
             
             handleStart: function (evt) {
@@ -234,14 +318,12 @@
                         const scaleFactor = distance / this.initialTouchDistance;
                         
                         // 🔧 REDUCIR SENSIBILIDAD DEL PELLIZCO
-                        // Solo aplicar cambios si el movimiento es significativo (threshold)
-                        const changeThreshold = 0.05; // 5% de cambio mínimo
+                        const changeThreshold = 0.05;
                         if (Math.abs(scaleFactor - 1) < changeThreshold) {
-                            return; // No hacer cambios muy pequeños
+                            return;
                         }
                         
-                        // Aplicar factor de amortiguación para suavizar el escalado
-                        const dampingFactor = 0.3; // Reduce la sensibilidad al 30%
+                        const dampingFactor = 0.3;
                         const smoothScaleFactor = 1 + (scaleFactor - 1) * dampingFactor;
                         
                         const gestureData = this.activeModel.getAttribute('gesture-handler');
@@ -290,6 +372,7 @@
                 this.el.addEventListener('touchstart', this.handleRotate);
                 
                 console.log('✅ Gesture handler moderno para:', this.el.id);
+                showDebug(`Gesture handler para ${this.el.id} inicializado`);
             },
             
             handleRotate: function (evt) {
@@ -339,9 +422,22 @@
         console.log('├── QR #6: buster_drone.glb');
         console.log('└── Controles táctiles: ✅ Mejorados');
         
-        // Performance monitoring (opcional)
+        // Performance monitoring
         window.addEventListener('load', () => {
             console.log('⚡ WebAR cargado completamente');
+            showDebug('WebAR completamente cargado');
+        });
+        
+        // Error handling global
+        window.addEventListener('error', function(e) {
+            showDebug(`Error: ${e.message}`);
+            console.error('Error global:', e);
+        });
+        
+        // Unhandled promise rejections
+        window.addEventListener('unhandledrejection', function(e) {
+            showDebug(`Promise rejection: ${e.reason}`);
+            console.error('Promise rejection:', e.reason);
         });
     </script>
 </body>
